@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\web\Response;
+use app\helpers\Env;
 use app\helpers\Utils;
 
 
@@ -15,7 +16,10 @@ class SiteController extends Controller {
 	}
 
 	public function actionFeed() {
-		$this->layout = false;
+		//$this->layout = false;
+		$this->layout = '@app/views/layouts/main';
+		//$this->view->title = Yii::t('app', 'main_page_title');
+		$this->view->title = Env::get('sitename');
 		return $this->render('@app/views/site/feed');
 	}
 

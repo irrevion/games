@@ -13,41 +13,41 @@ $this->beginPage();
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="solutions for scientific calculations" />
+		<?php $this->registerCsrfMetaTags(); ?>
+
+        <meta name="description" content="PC gaming blog with story-driven playthroughs, sharp commentary, honest reviews, and practical guides." />
         <meta name="author" content="Valentin Belousov" />
 
-        <title><?= $this->title; ?></title>
+        <title><?= Html::encode($this->title); ?></title>
 
-		<link rel="icon" href="favicon.ico" />
+		<!-- <link rel="icon" href="favicon.ico" />
 		<link rel="apple-touch-icon" href="apple-touch-icon.png" />
-		<link rel="manifest" href="site.webmanifest" />
-		<link rel="canonical" href="https://irrevion.dp.ua/" />
-		<link rel="alternate" href="https://irrevion.dp.ua/uk/index.html" hreflang="uk" />
-		<link rel="alternate" href="https://irrevion.dp.ua/az/index.html" hreflang="az" />
+		<link rel="manifest" href="site.webmanifest" /> -->
 
-        <link rel="stylesheet" href="app/public/css/bootstrap-5.3.3/css/bootstrap.css" />
-		<link rel="stylesheet" href="app/public/css/sb-admin-7.0.7.css" />
-        <link rel="stylesheet" href="app/public/css/skin-irry.css?v=2" />
-        <link rel="stylesheet" href="app/public/css/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css" />
+        <link rel="stylesheet" href="css/bootstrap-5.3.3/css/bootstrap.css" />
+		<link rel="stylesheet" href="css/sb-admin-7.0.7.css" />
+        <link rel="stylesheet" href="css/skin-irry.css?v=2" />
+        <link rel="stylesheet" href="css/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css" />
 
-		<script src="app/public/js/fa6.js"></script>
-		<script src="app/public/js/color-theme-toggler.js"></script>
+		<script src="js/fa6.js"></script>
+		<script src="js/color-theme-toggler.js"></script>
 
-		<!-- Google tag (gtag.js) -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-VNP0TJTCGW"></script>
-		<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-VNP0TJTCGW');
-		</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YW6LFL6DG8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YW6LFL6DG8');
+</script>
 
 		<?php $this->head(); ?>
     </head>
     <body class="sb-nav-fixed skin-irry"><?php $this->beginBody(); ?>
         <nav class="sb-topnav navbar navbar-expand navbar-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand" href="index.html"><img src="app/public/img/logo-slim.png" alt="Irrevion Science logo" class="logo logo-light" /><img src="app/public/img/logo.png" alt="Irrevion Science dark logo" class="logo logo-dark" /></a>
+            <a class="navbar-brand" href="index.html"><img src="images/logo-slim.png" alt="Irrevion Science logo" class="logo logo-light" /><img src="images/logo.png" alt="Irrevion Science dark logo" class="logo logo-dark" /></a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
 
@@ -55,9 +55,9 @@ gtag('config', 'G-VNP0TJTCGW');
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownLang" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Translate"><i class="bi bi-translate"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="navbarDropdownLang">
-                        <li><a class="dropdown-item active" href="index.html"><i class="bi bi-check"></i> English <img src="app/public/img/flag/en.png" class="flag" /></a></li>
-                        <li><a class="dropdown-item" href="uk/index.html">Українська <img src="app/public/img/flag/ua.png" class="flag" /></a></li>
-                        <li><a class="dropdown-item" href="az/index.html">Azərbaycan <img src="app/public/img/flag/az.png" class="flag" /></a></li>
+                        <li><a class="dropdown-item active" href="index.html"><i class="bi bi-check"></i> English <img src="images/flag/en.png" class="flag" /></a></li>
+                        <li><a class="dropdown-item" href="uk/index.html">Українська <img src="images/flag/ua.png" class="flag" /></a></li>
+                        <li><a class="dropdown-item" href="az/index.html">Azərbaycan <img src="images/flag/az.png" class="flag" /></a></li>
 					</ul>
                 </li>
 
@@ -116,7 +116,7 @@ gtag('config', 'G-VNP0TJTCGW');
 
                         <div class="card mb-4">
                             <div class="card-body">
-<img src="app/public/img/telescope.jpg" alt="Telescope at night with moon and big city on background" class="float-end img-thumbnail mini" />
+<img src="images/telescope.jpg" alt="Telescope at night with moon and big city on background" class="float-end img-thumbnail mini" />
 <p><strong>Intellectual heritage, accessible to everyone, free of charge, and everywhere, is a necessary condition and a guarantee for the survival, development, and expansion of humanity as a species.</strong></p>
 <p><strong>Irrevion Science</strong> is a resource dedicated to developing applied tools for scientific calculations. The website is currently in its early development stage.</p>
 <p>At the moment, the following projects are available or in development:<br />
