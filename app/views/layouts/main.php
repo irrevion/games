@@ -47,19 +47,19 @@ $this->beginPage();
     <body class="sb-nav-fixed skin-irry"><?php $this->beginBody(); ?>
         <nav class="sb-topnav navbar navbar-expand navbar-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand" href="index.html"><img src="images/logo-slim.png" alt="Irrevion Science logo" class="logo logo-light" /><img src="images/logo.png" alt="Irrevion Science dark logo" class="logo logo-dark" /></a>
+            <a class="navbar-brand" href="https://games.irrevion.dp.ua"><img src="images/logo.jpg" alt="Irrevion Games" class="logo logo-light" /><img src="images/logo.jpg" alt="Irrevion Games dark logo" class="logo logo-dark" /></a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
 
             <ul class="navbar-nav ms-auto me-1 me-lg-4">
-                <li class="nav-item dropdown">
+                <!-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownLang" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Translate"><i class="bi bi-translate"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="navbarDropdownLang">
                         <li><a class="dropdown-item active" href="index.html"><i class="bi bi-check"></i> English <img src="images/flag/en.png" class="flag" /></a></li>
                         <li><a class="dropdown-item" href="uk/index.html">Українська <img src="images/flag/ua.png" class="flag" /></a></li>
                         <li><a class="dropdown-item" href="az/index.html">Azərbaycan <img src="images/flag/az.png" class="flag" /></a></li>
 					</ul>
-                </li>
+                </li> -->
 
 				<li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownMode" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Toggle theme"><i class="bi bi-sun-fill"></i></a>
@@ -80,38 +80,16 @@ $this->beginPage();
 							<div class="sb-sidenav-menu-heading">Menu</div>
 							<a class="nav-link active" href="index.html">
 								<div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
-								Home
-							</a>
-							<a class="nav-link" href="converter.html" data-old_href="https://science.irrevion.dp.ua/Converter">
-								<div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-								Converter
-							</a>
-
-                            <div class="sb-sidenav-menu-heading">Projects</div>
-							<a class="nav-link" href="https://packagist.org/packages/irrevion/science" target="_blank">
-								<div class="sb-nav-link-icon"><i class="fa-solid fa-atom"></i></div>
-								Science PHP
-							</a>
-							<a class="nav-link" href="https://science.irrevion.dp.ua/Converter" target="_blank">
-								<div class="sb-nav-link-icon"><i class="fa-solid fa-gauge-high"></i></div>
-								Science UI
-							</a>
-							<a class="nav-link" href="https://github.com/irrevion/irry_cms" target="_blank">
-								<div class="sb-nav-link-icon"><i class="fa-solid fa-screwdriver-wrench"></i></i></div>
-								IrryCMS
-							</a>
-							<a class="nav-link" href="https://games.irrevion.dp.ua/penguin-on-iceberg/" target="_blank">
-								<div class="sb-nav-link-icon"><i class="fa-solid fa-gamepad"></i></div>
-								Penguin on Iceberg
+								Feed
 							</a>
                         </div>
                     </div>
                 </nav>
             </div>
             <div id="layoutSidenav_content">
-				 <?= $content; ?>
                 <main class="mb-4">
-                    <div class="container-fluid px-4">
+					<?= $content; ?>
+                    <!-- <div class="container-fluid px-4">
                         <h1 class="mt-4">Home</h1>
 
                         <div class="card mb-4">
@@ -131,20 +109,20 @@ $this->beginPage();
 <p>📄 Text is edited by <a href="https://chatgpt.com/" target="_blank">🌍 ChatGPT</a></p>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </main>
 
                 <footer class="py-4 mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div>Copyleft <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank">CC<i class="fa-brands fa-creative-commons-zero"></i></a> Irrevion 2023 &ndash; 2025</div>
+                            <div>&copy;Irrevion 2025 &ndash; <?= date('Y'); ?></div>
 
                             <div>
-                                <a href="https://github.com/irrevion" title="GitHub" target="_blank"><i class="fa-brands fa-github"></i></a>
+                                <a href="https://youtube.com/@irrevion" title="YouTube" target="_blank"><i class="fa-brands fa-youtube"></i></a>
                                 &middot;
-                                <a href="https://x.com/irrevion_" title="Twitter" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+                                <a href="https://www.tiktok.com/@irrevion" title="TikTok" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
                                 &middot;
-                                <a href="https://www.linkedin.com/company/irrevion-science/" title="LinkedIn" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                                <a href="https://t.me/irrevion_games" title="Telegram" target="_blank"><i class="fa-brands fa-telegram"></i></a>
                             </div>
                         </div>
                     </div>
@@ -152,7 +130,7 @@ $this->beginPage();
             </div>
         </div>
         <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script> -->
-        <script src="app/public/css/bootstrap-5.3.3/js/bootstrap.bundle.min.js"></script>
-        <script src="app/public/js/sb-admin-7.0.7.js"></script>
+        <script src="css/bootstrap-5.3.3/js/bootstrap.bundle.min.js"></script>
+        <script src="js/sb-admin-7.0.7.js"></script>
     <?php $this->endBody(); ?></body>
 </html><?php $this->endPage(); ?>
