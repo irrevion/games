@@ -1,5 +1,5 @@
 .logo {
-	height: 30px;
+	height: 30px; border-radius: 15px; margin: 0 15px; vertical-align: middle;
 }
 
 
@@ -21,7 +21,7 @@
 		color: #0ff;
 	}
 	a {
-		color: #1e4f71;
+		/* color: #1e4f71; */
 	}
 	h1, h2, h3, h4 {
 		color: #174069;
@@ -31,6 +31,9 @@
 	}
 	.card {
 		background-color: #d1dced;
+	}
+	.sb-topnav .navbar-brand {
+		text-transform: uppercase; font-size: 14px; font-weight: bold; line-height: 16px; width: 186px; font-family: Ebrima, sans-serif;
 	}
 }
 
@@ -95,7 +98,7 @@
 }
 
 .skin-irry .sb-sidenav-menu .nav-link.active  {
-	color: #0698a5; background-color: #181b1f; border-left: 2px solid #0698a5;
+	color: #f7a21e; background-color: #181b1f; border-left: 2px solid #f7a21e;
 }
 
 .skin-irry .sb-sidenav-menu .nav-link .sb-nav-link-icon  {
@@ -127,7 +130,7 @@
 
 [data-bs-theme=dark] .skin-irry {
     h1, h2, h3, h4 {
-		color: #0698a5;
+		color: #f7a21e;
 	}
     #layoutSidenav_content h1_ {
 		background-image: linear-gradient(to bottom, #0698a5, #03555d);
@@ -143,19 +146,19 @@
 		display: inline;
 	}
 	.navbar {
-		background-color: #0c2f48;
+		background-color: #2a0536;
 	}
 	.sb-topnav.navbar-dark #sidebarToggle {
-		color: #0698a5;
+		color: #f7a21e;
 	}
 	.sb-topnav.navbar-dark #sidebarToggle:hover {
-		color: #00c9db;
+		color: #fbc87a;
 	}
 	.sb-topnav .nav-link {
-		color: #0698a5;
+		color: #f7a21e;
 	}
 	.sb-topnav .nav-link:hover {
-		color: #00c9db;
+		color: #fbc87a;
 	}
 	.dropdown .dropdown-menu {
 		background-color: #212529;
@@ -185,12 +188,12 @@
 		color: #bbb;
 	}
 	a {
-		color: #0698a5;
+		color: #f7a21e;
 	}
 	a:hover {
-		color: #00c9db;
+		color: #f7a21e;
 	}
 	footer {
-		background-color: #14181d; color: #0698a5; border-top: 1px solid #000;
+		background-color: #14181d; color: #f7a21e; border-top: 1px solid #000;
 	}
 }

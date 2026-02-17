@@ -47,7 +47,7 @@ $this->beginPage();
     <body class="sb-nav-fixed skin-irry"><?php $this->beginBody(); ?>
         <nav class="sb-topnav navbar navbar-expand navbar-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand" href="https://games.irrevion.dp.ua"><img src="images/logo.jpg" alt="Irrevion Games" class="logo logo-light" /><img src="images/logo.jpg" alt="Irrevion Games dark logo" class="logo logo-dark" /></a>
+            <a class="navbar-brand" href="https://games.irrevion.dp.ua"><img src="images/logo.jpg" alt="Irry" class="logo logo-light" /><img src="images/logo.jpg" alt="Irry" class="logo logo-dark" /> Games</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
 
@@ -88,7 +88,16 @@ $this->beginPage();
             </div>
             <div id="layoutSidenav_content">
                 <main class="mb-4">
-					<?= $content; ?>
+					<div class="container-fluid px-4">
+                        <h1 class="mt-4">Feed</h1>
+
+						<div class="card mb-4">
+                            <div class="card-body">
+								<?= $content; ?>
+							</div>
+						</div>
+					</div>
+
                     <!-- <div class="container-fluid px-4">
                         <h1 class="mt-4">Home</h1>
 
