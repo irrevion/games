@@ -11,7 +11,7 @@
  Target Server Version : 100432 (10.4.32-MariaDB)
  File Encoding         : 65001
 
- Date: 17/02/2026 22:25:22
+ Date: 19/02/2026 11:06:37
 */
 
 SET NAMES utf8mb4;
@@ -47,6 +47,18 @@ CREATE TABLE `articles`  (
 ) ENGINE = MyISAM AUTO_INCREMENT = 32 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\'keywords\', \'descr\', \'title\', \'short\', \'full\'' ROW_FORMAT = FIXED;
 
 -- ----------------------------
+-- Table structure for articles_cats_rel
+-- ----------------------------
+DROP TABLE IF EXISTS `articles_cats_rel`;
+CREATE TABLE `articles_cats_rel`  (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `article_id` int UNSIGNED NOT NULL,
+  `category_id` int UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `article_id`(`article_id`, `category_id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = FIXED;
+
+-- ----------------------------
 -- Table structure for menu
 -- ----------------------------
 DROP TABLE IF EXISTS `menu`;
@@ -74,5 +86,21 @@ CREATE TABLE `menu`  (
   INDEX `mod_by`(`mod_by`) USING BTREE,
   INDEX `ordering`(`ordering`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 51 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '\'name\'' ROW_FORMAT = FIXED;
+
+-- ----------------------------
+-- Table structure for translates
+-- ----------------------------
+DROP TABLE IF EXISTS `translates`;
+CREATE TABLE `translates`  (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ref_table` char(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `ref_id` int UNSIGNED NOT NULL,
+  `lang` char(2) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `fieldname` char(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `text` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `ref_table_2`(`ref_table`, `ref_id`, `lang`, `fieldname`) USING BTREE,
+  INDEX `ref_table`(`ref_table`, `ref_id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 622 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS = 1;
