@@ -88,7 +88,15 @@ $this->beginPage();
             </div>
             <div id="layoutSidenav_content">
                 <main class="mb-4">
-					<?= $content; ?>
+					<div class="container-fluid px-4">
+                        <h1 class="mt-4">Feed</h1>
+
+						<div class="card mb-4">
+                            <div class="card-body">
+								<?= $content; ?>
+							</div>
+						</div>
+					</div>
 
                     <!-- <div class="container-fluid px-4">
                         <h1 class="mt-4">Home</h1>

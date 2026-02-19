@@ -38,3 +38,4 @@ tests/_support/_generated
 .env
 prod.env
 web/index_prod.php
+.trash
