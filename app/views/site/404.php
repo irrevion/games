@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use app\helpers\Env;
 use app\helpers\Utils;
 
 ?>
@@ -17,7 +18,7 @@ use app\helpers\Utils;
 									<p><?= Yii::t('app', '404_descr'); ?></p>
 									<p><a href="<?= Yii::$app->homeUrl; ?>"><?= Yii::t('app', '404_to_main'); ?></a></p>
 									<!-- <p><a href="mailto:admin@irrevion.dp.ua"><?= Yii::t('app', '404_feedback'); ?></a></p> -->
-									<p><?= Html::mailto(Yii::t('app', '404_feedback'), 'admin@irrevion.dp.ua'); ?></p>
+									<p><?= Html::mailto(Yii::t('app', '404_feedback'), Env::get('mailbox')); ?></p>
 								</div>
 							</div>
 						</div>
