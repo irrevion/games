@@ -11,7 +11,7 @@
  Target Server Version : 100432 (10.4.32-MariaDB)
  File Encoding         : 65001
 
- Date: 22/02/2026 21:28:35
+ Date: 27/02/2026 16:49:13
 */
 
 SET NAMES utf8mb4;
@@ -44,7 +44,7 @@ CREATE TABLE `articles`  (
   INDEX `sef`(`sef` ASC) USING BTREE,
   INDEX `add_by`(`add_by` ASC) USING BTREE,
   INDEX `mod_by`(`mod_by` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '\'keywords\', \'descr\', \'title\', \'short\', \'full\'' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '\'keywords\', \'descr\', \'title\', \'short\', \'full\'' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for articles_cats_rel
@@ -56,7 +56,19 @@ CREATE TABLE `articles_cats_rel`  (
   `category_id` int UNSIGNED NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `article_id`(`article_id` ASC, `category_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for articles_tags_rel
+-- ----------------------------
+DROP TABLE IF EXISTS `articles_tags_rel`;
+CREATE TABLE `articles_tags_rel`  (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `article_id` int UNSIGNED NOT NULL,
+  `tag_id` int UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uck_atid`(`article_id` ASC, `tag_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for comments
@@ -125,7 +137,7 @@ CREATE TABLE `counters`  (
   `counter` int UNSIGNED NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `ref_table`(`ref_table` ASC, `ref_id` ASC, `type` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 85 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 110 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for galleries
@@ -191,7 +203,7 @@ CREATE TABLE `menu`  (
   INDEX `add_by`(`add_by` ASC) USING BTREE,
   INDEX `mod_by`(`mod_by` ASC) USING BTREE,
   INDEX `ordering`(`ordering` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 51 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '\'name\'' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 52 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '\'name\'' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for menu_navpos_rel
@@ -241,14 +253,14 @@ CREATE TABLE `site_settings`  (
   `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `option`(`option` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for site_users
 -- ----------------------------
 DROP TABLE IF EXISTS `site_users`;
 CREATE TABLE `site_users`  (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `uid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `provider` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `identity` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
@@ -288,6 +300,17 @@ CREATE TABLE `site_users_events`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Table structure for tags
+-- ----------------------------
+DROP TABLE IF EXISTS `tags`;
+CREATE TABLE `tags`  (
+  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `hashtag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `hashtag`(`hashtag` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for translates
 -- ----------------------------
 DROP TABLE IF EXISTS `translates`;
@@ -301,6 +324,6 @@ CREATE TABLE `translates`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `ref_table_2`(`ref_table` ASC, `ref_id` ASC, `lang` ASC, `fieldname` ASC) USING BTREE,
   INDEX `ref_table`(`ref_table` ASC, `ref_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 622 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 680 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS = 1;
