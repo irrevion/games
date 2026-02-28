@@ -7,6 +7,7 @@ use yii\web\Controller;
 use yii\web\Response;
 use app\helpers\Env;
 use app\helpers\Utils;
+use app\models\Content;
 
 
 class SiteController extends Controller {
@@ -15,11 +16,13 @@ class SiteController extends Controller {
 		return true;
 	}
 
-	public function actionFeed() {
+	public function actionHome() {
 		$this->layout = '@app/views/layouts/main';
 		//$this->view->title = Yii::t('app', 'main_page_title');
 		$this->view->title = Env::get('sitename');
-		return $this->render('@app/views/site/feed');
+		$params = [];
+		$params['content'] = Content::getHomeLatest(20);
+		return $this->render('@app/views/site/main', $params);
 	}
 
     public function actionError() {

@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\BaseUrl;
 use yii\helpers\Url;
 use app\helpers\Utils;
+use app\widgets\Menu;
 
 $this->beginPage();
 
@@ -24,13 +25,13 @@ $this->beginPage();
 		<!-- <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 		<link rel="manifest" href="site.webmanifest" /> -->
 
-        <link rel="stylesheet" href="css/bootstrap-5.3.3/css/bootstrap.css" />
-		<link rel="stylesheet" href="css/sb-admin-7.0.7.css" />
-        <link rel="stylesheet" href="css/skin-irry.css?v=2" />
-        <link rel="stylesheet" href="css/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css" />
+        <link rel="stylesheet" href="<?= \yii\helpers\Url::to('@web/css/bootstrap-5.3.3/css/bootstrap.css') ?>">
+		<link rel="stylesheet" href="<?= \yii\helpers\Url::to('@web/css/sb-admin-7.0.7.css') ?>">
+        <link rel="stylesheet" href="<?= \yii\helpers\Url::to('@web/css/skin-irry.css') ?>">
+        <link rel="stylesheet" href="<?= \yii\helpers\Url::to('@web/css/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css') ?>">
 
-		<script src="js/fa6.js"></script>
-		<script src="js/color-theme-toggler.js"></script>
+		<script src="<?= \yii\helpers\Url::to('@web/js/fa6.js') ?>"></script>
+		<script src="<?= \yii\helpers\Url::to('@web/js/color-theme-toggler.js') ?>"></script>
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YW6LFL6DG8"></script>
@@ -47,7 +48,7 @@ $this->beginPage();
     <body class="sb-nav-fixed skin-irry"><?php $this->beginBody(); ?>
         <nav class="sb-topnav navbar navbar-expand navbar-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand" href="https://games.irrevion.dp.ua"><img src="images/logo.jpg" alt="Irry" class="logo logo-light" /><img src="images/logo.jpg" alt="Irry" class="logo logo-dark" /><span id="brand-text"> Games</span></a>
+            <a class="navbar-brand" href="https://games.irrevion.dp.ua"><img src="<?= Url::to('@web/images/logo.jpg'); ?>" alt="Irry" class="logo logo-light" /><img src="<?= Url::to('@web/images/logo.jpg'); ?>" alt="Irry" class="logo logo-dark" /><span id="brand-text"> Games</span></a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
 
@@ -77,11 +78,13 @@ $this->beginPage();
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-							<div class="sb-sidenav-menu-heading">Menu</div>
-							<a class="nav-link active" href="index.html">
+							<div class="sb-sidenav-menu-heading"><?= Yii::t('app', 'menu_title'); ?></div>
+
+                            <?= Menu::widget(); ?>
+							<!-- <a class="nav-link active" href="index.html">
 								<div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
-								Feed
-							</a>
+								Home
+							</a> -->
                         </div>
                     </div>
                 </nav>
@@ -130,8 +133,7 @@ $this->beginPage();
                 </footer>
             </div>
         </div>
-        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script> -->
-        <script src="css/bootstrap-5.3.3/js/bootstrap.bundle.min.js"></script>
-        <script src="js/sb-admin-7.0.7.js"></script>
+        <script src="<?= Url::to('@web/css/bootstrap-5.3.3/js/bootstrap.bundle.min.js'); ?>"></script>
+        <script src="<?= Url::to('@web/js/sb-admin-7.0.7.js'); ?>"></script>
     <?php $this->endBody(); ?></body>
 </html><?php $this->endPage(); ?>
