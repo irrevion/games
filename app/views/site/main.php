@@ -24,8 +24,10 @@ use app\helpers\Utils;
 						<?php foreach ($content as $c) { ?>
 						<?php
 						$post = strip_tags($c['post']);
-						// $post = Utils::truncate($post, 300);
-						$post = (new \cebe\markdown\GithubMarkdown())->parse($post);
+						$parser = new \app\components\SafeMarkdown();
+						$parser->enableNewlines = true;
+						$parser->html5 = true;
+						$post = $parser->parse($post);
 						$post = (new HTMLPurifier($config))->purify($post);
 						?>
 						<div class="card mb-4">
