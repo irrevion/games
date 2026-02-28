@@ -7,12 +7,16 @@ use yii\web\Controller;
 use yii\web\Response;
 use app\helpers\Env;
 use app\helpers\Utils;
+use app\controllers\BaseController;
 use app\models\Content;
 
 
-class SiteController extends Controller {
+class SiteController extends BaseController {
 
 	public function beforeAction($action='') {
+		if (!parent::beforeAction($action)) {
+			return false;
+		}
 		return true;
 	}
 
@@ -23,6 +27,12 @@ class SiteController extends Controller {
 		$params = [];
 		$params['content'] = Content::getHomeLatest(20);
 		return $this->render('@app/views/site/main', $params);
+	}
+
+	public function actionContacts() {
+		$this->layout = '@app/views/layouts/main';
+		$this->view->title = Yii::t('app', 'contacts_page_title').' - '.Env::get('sitename');
+		return $this->render('@app/views/site/contacts');
 	}
 
     public function actionError() {

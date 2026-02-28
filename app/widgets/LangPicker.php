@@ -9,7 +9,7 @@ use app\helpers\Utils;
 class LangPicker extends Widget {
 
 	// enlist allowed langs for lang picker links generation
-	public $langs_stock = ['az', 'en' /*, 'ru'*/ ];
+	public $langs = ['en' => 'en-US', 'es' => 'es-MX'];
 
 
 	public function init() {

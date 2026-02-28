@@ -8,24 +8,21 @@ use app\helpers\Utils;
 
 
 			<!-- site language picker -->
-            <div class="dropdown lang-picker">
-				<div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<?= Yii::t('app', Yii::$app->language.'_picker_label'); ?>
-				</div>
-				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="min-width: 5rem;">
-					<?php foreach ($this->context->langs_stock as $lng) {
-						if ($lng==Yii::$app->language) {
-							// skip currently picked language
-							continue;
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" id="navbarDropdownLang" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="<?= Yii::t('app', 'translate'); ?>"><i class="bi bi-translate"></i></a>
+				<ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="navbarDropdownLang">
+					<?php foreach ($this->context->langs as $ln=>$locale) {
+						$t_key = 'lang_'.strtr($locale, '-', '_');
+						$href = Url::current(['lang' => $ln]);
+						if (Yii::$app->controller->route === 'site/error') {
+							$href = Url::to(['site/home', 'lang' => $ln]);
 						}
 						?>
-					<a class="dropdown-item" href="<?= Yii::$app->urlManager->createUrl([
-						// 'site/index',
-						Yii::$app->controller->id.'/'.Yii::$app->controller->action->id,
-						'language' => $lng,
-					]); ?>"><?= Yii::t('app', $lng.'_picker_label'); ?></a>
+					<li>
+						<a title="<?= Yii::t('app', $t_key.'_title'); ?>" class="dropdown-item<?= ((Yii::$app->language==$locale)? ' active': ''); ?>" href="<?= Html::encode($href); ?>"><?php if (Yii::$app->language == $locale) { echo '<i class="bi bi-check"></i> '; } ?> <?= Yii::t('app', $t_key); ?> <img src="<?= Url::to('@web/images/flag/'.$locale.'.png'); ?>" class="flag" /></a>
+					</li>
 					<?php } ?>
-				</div>
-            </div>
+				</ul>
+			</li>
 			<!-- / end of site language picker -->
 

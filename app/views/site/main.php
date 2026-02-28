@@ -45,14 +45,5 @@ use app\helpers\Utils;
 						</div>
 						<?php } ?>
 						<?php } ?>
-						<!-- <div class="card mb-4">
-                            <div class="card-body">
-								<div>
-									<p>Irrevion Games - site is currently under active development 🏗. Visit us soon!</p>
-									<p>Meanwhile, you can check out our <a href="https://www.youtube.com/@irrevion" target="_blank">YouTube channel</a> with game reviews and news.</p>
-									<pre><?= print_r($content, true); ?></pre>
-								</div>
-							</div>
-						</div> -->
 					</div>
 

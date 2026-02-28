@@ -5,6 +5,7 @@ use yii\helpers\BaseUrl;
 use yii\helpers\Url;
 use app\helpers\Utils;
 use app\widgets\Menu;
+use app\widgets\LangPicker;
 
 $this->beginPage();
 
@@ -53,21 +54,21 @@ $this->beginPage();
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
 
             <ul class="navbar-nav ms-auto me-1 me-lg-4">
+                <?= LangPicker::widget(); ?>
                 <!-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownLang" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Translate"><i class="bi bi-translate"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="navbarDropdownLang">
-                        <li><a class="dropdown-item active" href="index.html"><i class="bi bi-check"></i> English <img src="images/flag/en.png" class="flag" /></a></li>
-                        <li><a class="dropdown-item" href="uk/index.html">Українська <img src="images/flag/ua.png" class="flag" /></a></li>
-                        <li><a class="dropdown-item" href="az/index.html">Azərbaycan <img src="images/flag/az.png" class="flag" /></a></li>
+                        <li><a title="<?= Yii::t('app', 'lang_en_US_title'); ?>" class="dropdown-item<?= (Yii::$app->language == 'en-US') ? ' active' : ''; ?>" href="<?= Url::current(['lang' => 'en']); ?>"><?php if (Yii::$app->language == 'en-US') { echo '<i class="bi bi-check"></i> '; } ?> <?= Yii::t('app', 'lang_en_US'); ?> <img src="<?= Url::to('@web/images/flag/en-US.png'); ?>" class="flag" /></a></li>
+                        <li><a title="<?= Yii::t('app', 'lang_es_MX_title'); ?>" class="dropdown-item<?= (Yii::$app->language == 'es-MX') ? ' active' : ''; ?>" href="<?= Url::current(['lang' => 'es']); ?>"><?php if (Yii::$app->language == 'es-MX') { echo '<i class="bi bi-check"></i> '; } ?> <?= Yii::t('app', 'lang_es_MX'); ?> <img src="<?= Url::to('@web/images/flag/es-MX.png'); ?>" class="flag" /></a></li>
 					</ul>
                 </li> -->
 
 				<li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownMode" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Toggle theme"><i class="bi bi-sun-fill"></i></a>
 					<ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="navbarDropdownMode">
-                        <li><a href="#" class="dropdown-item" data-bs-theme-value="light" aria-pressed="false"><i class="bi bi-sun-fill"></i> Light</a></li>
-                        <li><a href="#" class="dropdown-item" data-bs-theme-value="dark" aria-pressed="false"><i class="bi bi-moon-stars-fill"></i> Dark</a></li>
-                        <li><a href="#" class="dropdown-item active" data-bs-theme-value="auto" aria-pressed="true"><i class="bi bi-circle-half"></i> Auto</a></li>
+                        <li><a href="#" class="dropdown-item" data-bs-theme-value="light" aria-pressed="false"><i class="bi bi-sun-fill"></i> <?= Yii::t('app', 'theme_light'); ?></a></li>
+                        <li><a href="#" class="dropdown-item" data-bs-theme-value="dark" aria-pressed="false"><i class="bi bi-moon-stars-fill"></i> <?= Yii::t('app', 'theme_dark'); ?></a></li>
+                        <li><a href="#" class="dropdown-item active" data-bs-theme-value="auto" aria-pressed="true"><i class="bi bi-circle-half"></i> <?= Yii::t('app', 'theme_auto'); ?></a></li>
 					</ul>
 				</li>
 			</ul>
@@ -92,28 +93,6 @@ $this->beginPage();
             <div id="layoutSidenav_content">
                 <main class="mb-4">
 					<?= $content; ?>
-
-                    <!-- <div class="container-fluid px-4">
-                        <h1 class="mt-4">Home</h1>
-
-                        <div class="card mb-4">
-                            <div class="card-body">
-<img src="images/telescope.jpg" alt="Telescope at night with moon and big city on background" class="float-end img-thumbnail mini" />
-<p><strong>Intellectual heritage, accessible to everyone, free of charge, and everywhere, is a necessary condition and a guarantee for the survival, development, and expansion of humanity as a species.</strong></p>
-<p><strong>Irrevion Science</strong> is a resource dedicated to developing applied tools for scientific calculations. The website is currently in its early development stage.</p>
-<p>At the moment, the following projects are available or in development:<br />
-<a href="https://github.com/irrevion/science" target="_blank">⚛️ irrevion/science</a> — a mathematical library in PHP;<br />
-<a href="https://github.com/irrevion/irry_cms" target="_blank">🛠 IrryCMS</a> — a lightweight admin panel for website content management (PHP);<br />
-<a href="https://github.com/irrevion/science-ui" target="_blank">🧮 Science UI</a> — a front-end interface demonstrating API capabilities, such as a <a href="https://science.irrevion.dp.ua/Converter" target="_blank">⏲ Unit Converter</a> (React);<br />
-<a href="https://github.com/irrevion/science-api" target="_blank">📡 Science API</a> — an API for performing physical and mathematical calculations (PHP, Yii2);<br />
-<a href="https://github.com/irrevion/game-penguin-on-iceberg" target="_blank">🐧 Penguin@Iceberg</a> — a <a href="https://games.irrevion.dp.ua/penguin-on-iceberg/" target="_blank">mini-game</a> built in pure JavaScript where you must prevent a penguin from falling off the ice floe.<br />
-</p>
-<hr />
-<p>🖼 Image is generated by <a href="https://freepik.com/" target="_blank">🌍 Freepik</a></p>
-<p>📄 Text is edited by <a href="https://chatgpt.com/" target="_blank">🌍 ChatGPT</a></p>
-                            </div>
-                        </div>
-                    </div> -->
                 </main>
 
                 <footer class="py-4 mt-auto">
