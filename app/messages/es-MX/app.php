@@ -35,6 +35,8 @@ return [
 		Estoy en línea.
 		Una vez que te conectas, la Matriz ya no te suelta.',
 	'contacts_feedback' => 'Enviar mensaje',
+
+	'category_page_no_content' => 'No hay contenido en esta categoría aún. Por favor, vuelve más tarde.',
 ];
 
 ?>

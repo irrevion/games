@@ -55,13 +55,6 @@ $this->beginPage();
 
             <ul class="navbar-nav ms-auto me-1 me-lg-4">
                 <?= LangPicker::widget(); ?>
-                <!-- <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdownLang" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Translate"><i class="bi bi-translate"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="navbarDropdownLang">
-                        <li><a title="<?= Yii::t('app', 'lang_en_US_title'); ?>" class="dropdown-item<?= (Yii::$app->language == 'en-US') ? ' active' : ''; ?>" href="<?= Url::current(['lang' => 'en']); ?>"><?php if (Yii::$app->language == 'en-US') { echo '<i class="bi bi-check"></i> '; } ?> <?= Yii::t('app', 'lang_en_US'); ?> <img src="<?= Url::to('@web/images/flag/en-US.png'); ?>" class="flag" /></a></li>
-                        <li><a title="<?= Yii::t('app', 'lang_es_MX_title'); ?>" class="dropdown-item<?= (Yii::$app->language == 'es-MX') ? ' active' : ''; ?>" href="<?= Url::current(['lang' => 'es']); ?>"><?php if (Yii::$app->language == 'es-MX') { echo '<i class="bi bi-check"></i> '; } ?> <?= Yii::t('app', 'lang_es_MX'); ?> <img src="<?= Url::to('@web/images/flag/es-MX.png'); ?>" class="flag" /></a></li>
-					</ul>
-                </li> -->
 
 				<li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownMode" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Toggle theme"><i class="bi bi-sun-fill"></i></a>
@@ -82,10 +75,6 @@ $this->beginPage();
 							<div class="sb-sidenav-menu-heading"><?= Yii::t('app', 'menu_title'); ?></div>
 
                             <?= Menu::widget(); ?>
-							<!-- <a class="nav-link active" href="index.html">
-								<div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
-								Home
-							</a> -->
                         </div>
                     </div>
                 </nav>

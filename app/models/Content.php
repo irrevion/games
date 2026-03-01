@@ -46,6 +46,50 @@ class Content extends Model {
 		return $content;
 	}
 
+	public static function getCategoryBySef($sef) {
+		$ln = explode('-', Yii::$app->language)[0];
+		$sql = "SELECT m.id, m.sef, tr.text AS name
+			FROM menu m
+				JOIN translates tr ON tr.ref_table='menu' AND tr.ref_id=m.id AND tr.lang=:lang AND tr.fieldname='name'
+			WHERE m.is_deleted='0' AND m.parent_id='0' AND m.type='category' AND m.sef=:sef AND m.is_published='1'
+			LIMIT 1";
+		$params = [
+			':sef' => $sef,
+			':lang' => $ln,
+		];
+
+		$category = Yii::$app->db->createCommand($sql, $params)->queryOne();
+
+		return $category;
+	}
+
+	public static function getCategoryLatest($category_id, $limit) {
+		$ln = explode('-', Yii::$app->language)[0];
+		$sql = "SELECT a.id, a.sef, a.img, a.publish_datetime, a.is_highlighted,
+				tr1.text AS `title`, tr2.text AS `post`,
+				acr.category_id, m.sef AS category_sef, tr4.text AS category_name
+			FROM articles a
+				JOIN translates tr1 ON tr1.ref_table='articles' AND tr1.ref_id=a.id AND tr1.lang=:lang AND tr1.fieldname='title'
+				JOIN translates tr2 ON tr2.ref_table='articles' AND tr2.ref_id=a.id AND tr2.lang=:lang AND tr2.fieldname='post'
+				JOIN translates tr3 ON tr3.ref_table='articles' AND tr3.ref_id=a.id AND tr3.lang=:lang AND tr3.fieldname='is_published_lang' AND tr3.text='1'
+				JOIN articles_cats_rel acr ON acr.article_id=a.id AND acr.category_id=:category_id
+				LEFT JOIN menu m ON m.id=acr.category_id AND m.is_deleted='0' AND m.parent_id='0' AND m.type='category'
+				LEFT JOIN translates tr4 ON tr4.ref_table='menu' AND tr4.ref_id=m.id AND tr4.lang=:lang AND tr4.fieldname='name'
+			WHERE a.is_deleted='0' AND a.is_published='1' AND a.publish_datetime<=:time
+			ORDER BY a.publish_datetime DESC, a.id DESC
+			LIMIT ".(int)$limit;
+		$params = [
+			':time' => date('Y-m-d H:i:s'),
+			':lang' => $ln,
+			':category_id' => $category_id,
+		];
+
+		// print "<pre>".Yii::$app->db->createCommand($sql, $params)->rawSql; die();
+		$content = Yii::$app->db->createCommand($sql, $params)->queryAll();
+
+		return $content;
+	}
+
 	public static function countTotal() {
 		$sql = "SELECT COUNT(id) AS c
 			FROM content

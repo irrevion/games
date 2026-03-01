@@ -34,6 +34,8 @@ return [
 		Here are my accounts — feel free to share your thoughts.
 		I’m online. Once you’re plugged in, the Network never lets you go.',
 	'contacts_feedback' => 'Send message',
+
+	'category_page_no_content' => 'No content in this category yet. Please, visit us later.',
 ];
 
 ?>
