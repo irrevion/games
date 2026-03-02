@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Response;
 use app\helpers\Env;
@@ -22,8 +23,13 @@ class SiteController extends BaseController {
 
 	public function actionHome() {
 		$this->layout = '@app/views/layouts/main';
-		//$this->view->title = Yii::t('app', 'main_page_title');
-		$this->view->title = Env::get('sitename');
+		$this->view->title = Yii::t('app', 'main_page_title').' - '.Env::get('sitename');
+		$this->view->params['canonical'] = Url::current([], true);
+		foreach (Yii::$app->params['langs'] as $ln=>$locale) {
+			if ($locale != Yii::$app->language) {
+				$this->view->params['alternative_langs'][$ln] = Url::current(['lang' => $ln], true);
+			}
+		}
 		$params = [];
 		$params['content'] = Content::getHomeLatest(20);
 		return $this->render('@app/views/site/main', $params);
@@ -32,6 +38,12 @@ class SiteController extends BaseController {
 	public function actionContacts() {
 		$this->layout = '@app/views/layouts/main';
 		$this->view->title = Yii::t('app', 'contacts_page_title').' - '.Env::get('sitename');
+		$this->view->params['canonical'] = Url::current([], true);
+		foreach (Yii::$app->params['langs'] as $ln=>$locale) {
+			if ($locale != Yii::$app->language) {
+				$this->view->params['alternative_langs'][$ln] = Url::current(['lang' => $ln], true);
+			}
+		}
 		return $this->render('@app/views/site/contacts');
 	}
 

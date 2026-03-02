@@ -26,6 +26,17 @@ $this->beginPage();
 		<!-- <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 		<link rel="manifest" href="site.webmanifest" /> -->
 
+        <?php
+        if (!empty($this->params['canonical'])) {
+            echo Html::tag('link', '', ['rel' => 'canonical', 'href' => $this->params['canonical']]);
+        }
+        if (!empty($this->params['alternative_langs'])) {
+            foreach ($this->params['alternative_langs'] as $lang => $url) {
+                echo Html::tag('link', '', ['rel' => 'alternate', 'hreflang' => $lang, 'href' => $url]);
+            }
+        }
+        ?>
+
         <link rel="stylesheet" href="<?= \yii\helpers\Url::to('@web/css/bootstrap-5.3.3/css/bootstrap.css') ?>">
 		<link rel="stylesheet" href="<?= \yii\helpers\Url::to('@web/css/sb-admin-7.0.7.css') ?>">
         <link rel="stylesheet" href="<?= \yii\helpers\Url::to('@web/css/skin-irry.css') ?>">

@@ -14,6 +14,8 @@ class LangPicker extends Widget {
 
 	public function init() {
 		parent::init();
+		// get allowed langs from params
+		$this->langs = Yii::$app->params['langs'];
 	}
 
 	public function run() {

@@ -12,38 +12,47 @@ class Menu extends Widget {
 		[
 			'name' => 'home',
 			'icon' => 'home',
-			'selected' => ['site/home'],
 			'url' => 'site/home'
 		],
 		[
 			'name' => 'feed',
 			'icon' => 'dove',
-			'selected' => ['category/feed'],
-			//'url' => 'category/feed',
-			'url' => ['content/category', 'category_sef' => 'feed']
+			'url' => ['content/category', 'category_sef' => 'feed'],
+			'match' => [
+				'routes' => ['content/category', 'content/post'],
+				'params' => ['category_sef' => 'feed'],
+			],
 		],
 		[
 			'name' => 'news',
 			'icon' => 'newspaper',
-			'selected' => ['category/news'],
-			'url' => ['content/category', 'category_sef' => 'news']
+			'url' => ['content/category', 'category_sef' => 'news'],
+			'match' => [
+				'routes' => ['content/category', 'content/post'],
+				'params' => ['category_sef' => 'news'],
+			],
 		],
 		[
 			'name' => 'reviews',
 			'icon' => 'star-half-stroke',
-			'selected' => ['category/reviews'],
-			'url' => ['content/category', 'category_sef' => 'reviews']
+			'url' => ['content/category', 'category_sef' => 'reviews'],
+			'match' => [
+				'routes' => ['content/category', 'content/post'],
+				'params' => ['category_sef' => 'reviews'],
+			],
 		],
 		[
 			'name' => 'tips',
 			'icon' => 'lightbulb',
-			'selected' => ['category/tips'],
-			'url' => ['content/category', 'category_sef' => 'tips']
+			'url' => ['content/category', 'category_sef' => 'tips'],
+			'match' => [
+				'routes' => ['content/category', 'content/post'],
+				'params' => ['category_sef' => 'tips'],
+			],
 		],
 		[
 			'name' => 'contacts',
 			'icon' => 'headset',
-			'selected' => ['site/contacts'],
 			'url' => 'site/contacts'
 		],
 	];
@@ -59,7 +68,7 @@ class Menu extends Widget {
 		$ln = explode('-', Yii::$app->language)[0];
 
 		foreach ($this->menu as $i=>$item) {
-			$active = in_array($cur_page, $item['selected']);
+			$active = $this->isActive($item);
 			$url = $item['url'];
 			if (is_array($url)) {
 				$url['lang'] = $ln;
@@ -74,4 +83,44 @@ class Menu extends Widget {
 
 		return $html;
     }
+
+	private function isActive(array $item): bool {
+		$currentRoute  = Yii::$app->controller->getRoute();
+		$currentParams = Yii::$app->request->get();
+
+		if (!empty($item['match'])) {
+			$routes = $item['match']['routes'] ?? [];
+			if ($routes && !in_array($currentRoute, $routes, true)) {
+				return false;
+			}
+
+			foreach (($item['match']['params'] ?? []) as $k => $v) {
+				if (!isset($currentParams[$k]) || (string)$currentParams[$k] !== (string)$v) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		$itemUrl = $item['url'];
+
+		if (is_string($itemUrl)) {
+			return $itemUrl === $currentRoute;
+		}
+
+		$urlCopy = $itemUrl;
+		$route = array_shift($urlCopy);
+
+		if ($route !== $currentRoute) {
+			return false;
+		}
+
+		foreach ($urlCopy as $k => $v) {
+			if (!isset($currentParams[$k]) || (string)$currentParams[$k] !== (string)$v) {
+				return false;
+			}
+		}
+
+		return true;
+	}		
 }
