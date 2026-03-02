@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use app\helpers\Utils;
+use app\helpers\Out;
 
 ?>
 
@@ -14,36 +15,34 @@ use app\helpers\Utils;
 							<?= Yii::t('app', 'main_page_no_content'); ?>
 						</div>
 						<?php } else { ?>
-						<?php
-						$config = HTMLPurifier_Config::createDefault();
-						// $config->set('HTML.Allowed', 'p,b,i,u,a[href],ul,ol,li,br,img[src|alt|class],strong,em');
-						$config->set('HTML.Allowed', 'p,br,strong,em,b,i,ul,ol,li,blockquote,code,pre,h1,h2,h3,h4,h5,h6,table,thead,tbody,tr,th,td,a[href|title|target],img[src|alt|title]');
-						$config->set('Attr.AllowedFrameTargets', ['_blank']);
-						$config->set('URI.AllowedSchemes', ['http','https','mailto']);
-						?>
-						<?php foreach ($content as $c) { ?>
-						<?php
-						$post = strip_tags($c['post']);
-						$parser = new \app\components\SafeMarkdown();
-						$parser->enableNewlines = true;
-						$parser->html5 = true;
-						$post = $parser->parse($post);
-						$post = (new HTMLPurifier($config))->purify($post);
-						?>
+						<!-- promo block -->
 						<div class="card mb-4">
-							<div class="card-body">
-								<div class="align-items-center mb-2">
-									<?php if (!empty($c['img'])) { ?>
-									<img src="<?= Url::to('@web/uploads/articles/block/'.$c['img']); ?>" alt="<?= Html::encode($c['title']); ?>" class="float-end img-thumbnail mini" />
-									<!-- <img src="<?= Url::to('@web/uploads/articles/block/'.$c['img']); ?>" alt="<?= Html::encode($c['title']); ?>" class="content-img me-3" /> -->
-									<?php } ?>
-									<!-- <h5 class="card-title mb-0"><?= Html::encode($c['title']); ?></h5> -->
-									<?= $post; ?>
+                            <div class="card-body">
+                                <?= Yii::t('app', 'welcome'); ?>
+                            </div>
+                        </div>
+						<!-- content blocks -->
+						<div class="row row-cols-1 row-cols-lg-2 g-4">
+						<?php foreach ($content as $c) { ?>
+							<?php
+								$txt = Out::short($c['post'], 180);
+							?>
+							<div class="col">
+								<div class="card h-100 mb-4">
+									<div class="card-header">
+										<?= Out::catIco($c['category_sef']); ?> <?= Html::encode($c['title']); ?>
+									</div>
+									<div class="card-body">
+										<?php if (!empty($c['img'])) { ?>
+										<img src="<?= Url::to('@web/uploads/articles/block/'.$c['img']); ?>" alt="<?= Html::encode($c['title']); ?>" class="float-end img-thumbnail mini" />
+										<?php } ?>
+										<?= $txt ?> <?= str_ends_with($txt, '...') ? Html::a(Yii::t('app', 'read_more'), ['content/post', 'category_sef' => $c['category_sef'], 'id' => $c['id'], 'slug' => $c['sef'], 'lang' => explode('-', Yii::$app->language)[0]]) : ''; ?>
+									</div>
+									<div class="card-footer small text-muted"><?= Out::pubTS($c['publish_datetime']); ?></div>
 								</div>
-								<!-- <a href="<?= Url::to('category/'.$c['category_sef'].'/post/'.$c['id'].'-'.$c['sef']); ?>" class="btn btn-primary"><?= Yii::t('app', 'read_more'); ?></a> -->
 							</div>
-						</div>
 						<?php } ?>
+						</div>
 						<?php } ?>
 					</div>
 

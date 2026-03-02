@@ -26,7 +26,10 @@ return [
 	'menu_item_contacts' => 'Contacts',
 
 	'main_page_title' => 'Home',
+	'welcome' => 'Welcome to Irrevion Games! We are passionate about gaming and strive to provide you with the latest news, reviews, and tips in the gaming world. Explore our categories to find exciting content and stay updated with the gaming industry. Happy gaming!',
 	'read_more' => 'Read more',
+	'updated_when_at' => 'Updated {when} at {time}',
+	'published_when_at' => 'Published {when} at {time}',
 	'main_page_no_content' => 'No content yet. Please, visit us later.',
 
 	'contacts_page_title' => 'Contacts',

@@ -26,7 +26,10 @@ return [
 	'menu_item_contacts' => 'Contacto',
 
 	'main_page_title' => 'Inicio',
+	'welcome' => '¡Bienvenido a Irrevion Games! Somos apasionados por los videojuegos y nos esforzamos por brindarte las últimas noticias, reseñas y consejos en el mundo de los juegos. Explora nuestras categorías para encontrar contenido emocionante y mantente actualizado con la industria de los videojuegos. ¡Feliz juego!',
 	'read_more' => 'Leer más',
+	'updated_when_at' => 'Actualizado {when} a las {time}',
+	'published_when_at' => 'Publicado {when} a las {time}',
 	'main_page_no_content' => 'Aún no hay contenido. Vuelve más tarde.',
 
 	'contacts_page_title' => 'Contacto',

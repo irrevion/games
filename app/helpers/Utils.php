@@ -20,7 +20,6 @@ class Utils {
 			(bool) checkDate($format, $date)
 			(bool) checkFieldName($name)
 			(bool) checkIP($ip)
-			(bool) checkAbonentCode($code)
 			(bool) variableHasValue($var)
 		Converting:
 			(string) bigint2string($bigint)
@@ -114,61 +113,84 @@ class Utils {
 
 	/* validation */
 
-	public static function checkPIN($pin) { // 2020-10-06
+	public static function checkPIN($pin) {
 		return preg_match('/^[0-9]{1}[0-9A-Z]{6}$/i', $pin);
 	}
 
-	public static function checkLogin($login) { // 2020-10-06
+	public static function checkLogin($login) {
 		return preg_match('/^[0-9a-z\_\-\@\.]{3,32}$/i', $login);
 	}
 
-	public static function checkPass($pass) { // 2020-10-06
+	public static function checkPass($pass) {
 		return preg_match('|^[a-zA-Z0-9\.\_\-\+\!\@\#\$\%\^\&\*\(\)\=\`\~\{\[\]\}\;\:\>\<\?\'\"\/\\\]{6,64}$|', $pass);
 	}
 
-	public static function isValidEmail($email) { // 2018-05-02
+	public static function isValidEmail($email) {
 		return filter_var((string)$email, FILTER_VALIDATE_EMAIL);
 	}
 
-	public static function isValidURIElement($s) { // 2020-10-06
+	public static function isValidURIElement($s) {
 		return preg_match('/^[0-9a-z\_\-]{1,255}$/i', $s);
 	}
 
-	public static function isValidURL($url) { // 2020-10-06
+	public static function isValidURL($url) {
 		return filter_var($url, FILTER_VALIDATE_URL);
 	}
 
-	public static function isValidHumanName($name) { // 2020-10-06
-		return preg_match('/^[a-zа-яА-ЯA-ZüöğıəçşёÜÖĞİƏÇŞЁ\-\`\\\'\s]{2,64}$/u', (string)$name);
+	public static function isValidHumanName($name) {
+		// return preg_match('/^[a-zа-яА-ЯA-ZüöğıəçşёÜÖĞİƏÇŞЁ\-\`\\\'\s]{2,64}$/u', (string)$name);
+		$name = (string)$name;
+		$name = trim($name);
+		$name = strip_tags($name);
+		$name = str_replace(['<', '>', '/', '+', '=', '√', '°', '†', '💩', '🏳️‍🌈', '🇷🇺'], '', $name);
+		$name = preg_replace('/\s+/u', ' ', $name);
+		$l = mb_strlen($name, 'UTF-8');
+		if (($l<2) || ($l>255)) {return false;}
+		if (!preg_match('/[\p{L}]/u', $name)) {return false;}
+		if (preg_match('/[\p{C}]/u', $name)) {return false;}
+		return true;
 	}
 
-	public static function isValidHumanNSP($nsp) { // 2020-10-06
+	public static function isValidHumanNameStrict(&$name): bool {
+		$ok = self::isValidHumanName($name);
+		if (!$ok) return false;
+		// clear emoji
+		$name = preg_replace('/[\p{So}\p{Sk}\p{Cs}]+/u', '', $name);
+		// whitelist nsp chars
+		if (!preg_match('/^[\p{L}\p{M}\p{Zs}\.\-\'’ʼ-–—]+$/u', $name)) return false;
+		// forbid start with punctuation
+		if (preg_match('/^[\.\-\'’ʼ-–—]|[\.\-\'’ʼ-–—]$/u', $name)) return false;
+		// forbid repeated punctuation
+		if (preg_match('/([.\-\'’ʼ-–—])\1\1+/u', $name)) return false;
+		return true;
+	}
+
+	public static function isValidHumanNSP($nsp) {
 		$nsp = (string)$nsp;
 		$nsp = trim($nsp);
 
-		return preg_match('/^[a-zа-яА-ЯA-ZüöğıəçşёÜÖĞİƏÇŞЁ]{2,}\s+[a-zа-яА-ЯA-ZüöğıəçşёÜÖĞİƏÇŞЁ\-\`\\\'\s]+$/u', $nsp);
+		return preg_match('/^[a-zа-яА-ЯA-ZüöğıəçşёÜÖĞİƏÇŞЁєіїЄІЇʼ]{2,}\s+[a-zа-яА-ЯA-ZüöğıəçşёÜÖĞİƏÇŞЁєіїЄІЇʼ\-\`\\\'\s]+$/u', $nsp);
 	}
 
-	public static function isValidPhone($phone) { // 2018-05-02
-		// return preg_match('/^\+994\d{9}$/u', (string)$phone);
+	public static function isValidPhone($phone) {
 		return preg_match('/^\+994(50|51|55|70|77)\d{7}$/u', (string)$phone);
 	}
 
-	public static function isValidDate($date) { // 2020-10-06
+	public static function isValidDate($date) {
 		return preg_match('/^\d{2}\.\d{2}\.\d{4}$/', $date);
 	}
 
-	public static function checkDate($format, $date) { // 2020-10-06
+	public static function checkDate($format, $date) {
 		$date_parsed = date_parse_from_format($format, $date);
 		if ($date_parsed['error_count']) {return false;}
 		return checkdate($date_parsed['month'], $date_parsed['day'], $date_parsed['year']);
 	}
 
-	public static function checkFieldName($name) { // 2020-10-06
+	public static function checkFieldName($name) {
 		return @preg_match( '/^[0-9a-z\_]{2,32}$/i', $name);
 	}
 
-	public static function checkIP($ip) { // 2020-10-06
+	public static function checkIP($ip) {
 		if (preg_match('/^[0-9]{1,3}\.[0-9]{0,3}\.[0-9]{1,3}\.[0-9]{1,3}$/', $ip)) {
 			return true;
 		}
@@ -176,23 +198,18 @@ class Utils {
 		return false;
 	}
 
-	public static function checkAbonentCode($code) { // 2017-03-17
-		// checks if AzeriIshiq code is valid
-		return preg_match('/^[0-9]{2}[0-9A-ZÜÖĞİƏÇŞ]{13}$/i', $code);
-	}
-
-	public static function variableHasValue($var) { // 2020-10-06
+	public static function variableHasValue($var) {
 		return !(empty($var) && ($var!=='0') && ($var!==false));
 	}
 
 
 	/* Converting */
 
-	public static function bigint2string($bigint) { // 2017-07-06
+	public static function bigint2string($bigint) {
 		return sprintf('%.0f', $bigint);
 	}
 
-	public static function date2stamp($time) { // 2020-10-06
+	public static function date2stamp($time) {
 		$matches = [];
 		if (preg_match('/^(\d{2})\.(\d{2})\.(\d{4})$/', $time, $matches)) {
 			return mktime(0, 0, 0, $matches[2], $matches[1], $matches[3]);
@@ -200,17 +217,17 @@ class Utils {
 		return false;
 	}
 
-	public static function stamp2date($timestamp) { // 2020-10-06
+	public static function stamp2date($timestamp) {
 		return date('d.m.Y', $timestamp);
 	}
 
-	public static function formatPlainDate($format, $date) { // 2020-10-06
+	public static function formatPlainDate($format, $date) {
 		$date = self::date2stamp($date);
 		if (empty($date)) {return '';}
 		return @date($format, $date);
 	}
 
-	public static function parseMySQLDate($date) { // 2020-10-06
+	public static function parseMySQLDate($date) {
 		@list($date, $time) = explode(' ', $date);
 		if (empty($date)) {return 0;}
 		$date_parts = [];
@@ -222,13 +239,13 @@ class Utils {
 		return 0;
 	}
 
-	public static function formatMySQLDate($format, $date) { // 2020-10-06
+	public static function formatMySQLDate($format, $date) {
 		$date = self::parseMySQLDate($date);
 		if (empty($date)) {return '';}
 		return @date($format, $date);
 	}
 
-	public static function parseXLSXDate($date) { // 2020-10-06
+	public static function parseXLSXDate($date) {
 		$d = false;
 		if (@preg_match('/^\d{2}\-\d{2}\-\d{2}$/', $date)) {
 			$d = explode('-', $date);
@@ -244,25 +261,25 @@ class Utils {
 		return self::parseMySQLDate($d);
 	}
 
-	public static function formatXLSXDate($format, $date) { // 2020-10-06
+	public static function formatXLSXDate($format, $date) {
 		$date = self::parseXLSXDate($date);
 		if (empty($date)) {return '';}
 		return @date($format, $date);
 	}
 
-	public static function changeDateFormat($fromFormat, $toFormat, $date) { // 2020-10-06
+	public static function changeDateFormat($fromFormat, $toFormat, $date) {
 		$date_parsed = date_parse_from_format($fromFormat, $date);
 		if ($date_parsed['error_count']) {return false;}
 		$timestamp = mktime($date_parsed['hour'], $date_parsed['minute'], $date_parsed['second'], $date_parsed['month'], $date_parsed['day'], $date_parsed['year']);
 		return date($toFormat, $timestamp);
 	}
 
-	public static function validateDatetime($date, $format="Y-m-d\TH:i:sP") { // 2020-10-06
+	public static function validateDatetime($date, $format="Y-m-d\TH:i:sP") {
 		$d = \DateTime::createFromFormat($format, $date);
 		return ($d && ($d->format($format)==$date));
 	}
 
-	public static function getYearsOld($birth_date) { // 2017-05-01
+	public static function getYearsOld($birth_date) {
 		$years_old = date('Y')-self::changeDateFormat('Y-m-d', 'Y', $birth_date);
 		if (date('Y-m-d')<(date('Y').'-'.self::changeDateFormat('Y-m-d', 'm-d', $birth_date))) {
 			$years_old = $years_old-1;
@@ -271,7 +288,7 @@ class Utils {
 		return $years_old;
 	}
 
-	public static function getAge($birth_date, $stringify=true) { // 2017-05-01
+	public static function getAge($birth_date, $stringify=true) {
 		$y = self::getYearsOld($birth_date);
 
 		$bDay = new \DateTime($birth_date);
@@ -289,13 +306,13 @@ class Utils {
 
 	/* HTML */
 
-	public static function safeEcho($str, $return=false) { // 2017-02-23
+	public static function safeEcho($str, $return=false) {
 		$str = (is_string($str)? htmlspecialchars($str): '');
 		if (!$return) {print $str; return 1;}
 		return $str;
 	}
 
-	public static function safeJsEcho($str, $return=false) { // 2017-02-23
+	public static function safeJsEcho($str, $return=false) {
 		$str = (is_string($str)? addslashes($str): '');
 		$str = strtr($str, [
 			"\n" => "\\\n"
@@ -304,7 +321,7 @@ class Utils {
 		return $str;
 	}
 
-	public static function safePostValue($key, $default='', $escape_default=false) { // 2017-02-23
+	public static function safePostValue($key, $default='', $escape_default=false) {
 		if (isset($_POST[$key])) {
 			return self::safeEcho($_POST[$key], 1);
 		}
@@ -312,7 +329,7 @@ class Utils {
 		return $default;
 	}
 
-	public static function safeCleanMarkupEcho($str, $return=false, $limit=1000) { // 2016-01-02
+	public static function safeCleanMarkupEcho($str, $return=false, $limit=1000) {
 		// clean HTML markup, but preserve line break tags
 		$str = trim(@(string)$str);
 		$str = str_replace(["\r\n", "\n", "\r"], '', $str);
@@ -328,12 +345,14 @@ class Utils {
 		return $str;
 	}
 
-	public static function html2text($str) { // 2017-03-04
+	public static function html2text($str) {
 		// clean HTML markup, but preserve newlines
 		$str = trim(@(string)$str);
 		$str = str_replace(["\r\n", "\n", "\r"], '', $str);
 		$str = strtr($str, [
 			'</p>' => "</p>\n",
+			'</li>' => "</li>\n",
+			'</h3>' => "</h3>\n",
 			'<br>' => "<br>\n",
 			'<br/>' => "<br/>\n",
 			'<br />' => "<br />\n",
@@ -343,12 +362,12 @@ class Utils {
 		return $str;
 	}
 
-	public static function unescapeTagInnerHTML($html, $tag='noscript') { // 2020-10-07
+	public static function unescapeTagInnerHTML($html, $tag='noscript') {
 		$html = preg_replace("/(.*)(?<=\<{$tag}\>)(.*)(?=\<\/{$tag}\>)(.*)/Usue", "\"\$1\".htmlspecialchars_decode(htmlspecialchars_decode(\"\$2\")).\"\$3\"", $html);
 		return $html;
 	}
 
-	public static function stripNonFormatTags($str, $inform=true, $extended=true) { // 2020-10-07
+	public static function stripNonFormatTags($str, $inform=true, $extended=true) {
 		if ($inform) {
 			$str = strtr($str, [
 				'<iframe' => '%IFRAME%<iframe',
@@ -364,7 +383,7 @@ class Utils {
 		return $str;
 	}
 
-	public static function array2form($arr, $inp_pattern="<input type=\"hidden\" name=\"{name}\" value=\"{value}\" />\n", $NOT_NULL=true) { // 2020-10-07
+	public static function array2form($arr, $inp_pattern="<input type=\"hidden\" name=\"{name}\" value=\"{value}\" />\n", $NOT_NULL=true) {
 		$form = '';
 		if (is_array($arr) && count($arr)) {
 			if (function_exists('http_build_query')) {
@@ -398,7 +417,7 @@ class Utils {
 		return $form;
 	}
 
-	public static function genAttrString($attrs, $prefix='') { // 2017-02-16
+	public static function genAttrString($attrs, $prefix='') {
 		$res = '';
 		if (!empty($attrs) && is_array($attrs)) foreach ($attrs as $k=>$v) {
 			if (is_array($v)) {
@@ -413,11 +432,11 @@ class Utils {
 
 	/* Texts & Strings */
 
-	public static function strCollapseSpaces($str) { // 2016-10-11
+	public static function strCollapseSpaces($str) {
 		return trim(preg_replace('/[  \t\n\r]+/u', ' ', $str));
 	}
 
-	public static function replaceLinks($text) { // 2020-06-17
+	public static function replaceLinks($text) {
 		$regexp = '/((?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$]))/im';
 
 		$text = preg_replace($regexp, '<a href="$1" target="_blank">$1</a>', $text);
@@ -425,13 +444,23 @@ class Utils {
 		return $text;
 	}
 
-	public static function limitWords($str, $limit, $hellip=1) { // 2020-10-07
+	public static function truncateByWords(string $s, int $maxLen = 180, string $endWith = '…'): string {
+		$s = trim(preg_replace('/\s+/u', ' ', $s));
+		if (mb_strlen($s, 'UTF-8') <= $maxLen) return $s;
+
+		$cut = mb_substr($s, 0, $maxLen, 'UTF-8');
+		$cut = preg_replace('/\s+\S*$/u', '', $cut);
+
+		return rtrim($cut).$endWith;
+	}
+
+	public static function limitWords($str, $limit, $hellip=1) {
 		$words = explode(' ', $str);
 
 		return implode(' ', array_slice($words, 0, $limit)).(($hellip && (count($words)>$limit))? '&hellip;': '');
 	}
 
-	public static function limitStringLength($str, $limit, $hellip=1) { // 2017-02-17
+	public static function limitStringLength($str, $limit, $hellip=1) {
 		$res = mb_substr($str, 0, $limit, 'UTF-8');
 		if ($hellip) {
 			if (mb_strlen($str)>$limit) {
@@ -441,7 +470,7 @@ class Utils {
 		return $res;
 	}
 
-	public static function getRussianWordEndingByNumber($n, $s='', $d='а', $m='ов') { // 2020-10-07
+	public static function getRussianWordEndingByNumber($n, $s='', $d='а', $m='ов') {
 		$last_digit = $n-(floor($n/10)*10);
 		$dec_n = floor(($n-$last_digit)/10);
 		$dec_digit = $dec_n-(floor($dec_n/10)*10);
@@ -449,7 +478,7 @@ class Utils {
 		return ((($dec_digit==1) || ($last_digit>=5) || ($last_digit==0))? $m: (($last_digit==1)? $s: $d));
 	}
 
-	public static function getAzerbaijanianWordEndingByNumber($n, $n12578='i', $n34='ü', $n6='ı', $n9='u', $n0='i') { // 2020-10-07
+	public static function getAzerbaijanianWordEndingByNumber($n, $n12578='i', $n34='ü', $n6='ı', $n9='u', $n0='i') {
 		$last_digit = $n-(floor($n/10)*10);
 		if (in_array($last_digit, [1, 2, 5, 7, 8])) {
 			return $n12578;
@@ -462,17 +491,17 @@ class Utils {
 		}
 	}
 
-	public static function getOnlyWords($str) { // 2017-04-06
+	public static function getOnlyWords($str) {
 		preg_match_all('/([a-zA-Z]|\xC3[\x80-\x96\x98-\xB6\xB8-\xBF]|\xC5[\x92\x93\xA0\xA1\xB8\xBD\xBE]){4,}/', $str, $match_arr);
 		return implode(' ', $match_arr[0]);
 	}
 
-	public static function sanitizeStringByWhitelist($string, $whitelist, $escape=0) { // 2017-02-16
+	public static function sanitizeStringByWhitelist($string, $whitelist, $escape=0) {
 		if ($escape) {$whitelist = preg_quote($whitelist);}
 		return preg_replace("/[^".$whitelist."]?(.*?)[^".$whitelist."]?/usD", '$1', $string);
 	}
 
-	public static function makeSearchable($str) { // 2016-07-29
+	public static function makeSearchable($str) {
 		$str = strip_tags(@(string)$str);
 		$str = mb_strtolower($str, 'UTF-8');
 		$str = str_replace(["\t", "\r\n", "  "], ' ', $str);
@@ -482,7 +511,7 @@ class Utils {
 		return $str;
 	}
 
-	public static function makeSEF($s) { // 2020-10-07
+	public static function makeSEF($s) {
 		$s = (string)$s;
 		$s = mb_strtolower(trim($s));
 		$s = preg_replace('/\s+/u', '-', $s);
@@ -496,7 +525,7 @@ class Utils {
 		return $s;
 	}
 
-	public function translitSMS($str) { // 2020-10-07
+	public function translitSMS($str) {
 		$fr = ['ü', 'Ü', 'ö', 'Ö', 'ğ', 'Ğ', 'İ', 'ı', 'Ç', 'ç', 'Ş', 'ş', 'Ə', 'ə', '«', '»', '/', '\\', '|', ':', '*', '?', '"', '<', '>', '&', '%', '#', '№', '$'];
 		$to = ['u', 'U', 'o', 'O', 'g', 'G', 'I', 'i', 'C', 'c', 'S', 's', 'A', 'e', '',  '',  '',  '',   '',  '-', '',  '',  '',  '',  '',  '',  '',  'N', 'N', ' USD'];
 		$str = strtr($str, array_combine($fr, $to));
@@ -504,7 +533,7 @@ class Utils {
 		return $str;
 	}
 
-	public static function translit($str, $full=false, $filename=false) { // 2020-10-07
+	public static function translit($str, $full=false, $filename=false) {
 		$fr = array('ü', 'Ü', 'ö', 'Ö', 'ğ', 'Ğ', 'İ', 'ı', 'Ç', 'ç', 'Ş', 'ş', 'Ə', 'ə');
 		$to = array('u', 'U', 'o', 'O', 'g', 'G', 'I', 'i', 'Ch', 'ch', 'Sh', 'sh', 'A', 'e');
 		if ($full) {
@@ -522,7 +551,7 @@ class Utils {
 		return $str;
 	}
 
-	public static function translit_ru2az($str) { // 2017-11-24
+	public static function translit_ru2az($str) {
 		$refs = [
 			'а' => 'a', 'А' => 'A',
 			'б' => 'b', 'Б' => 'B',
@@ -564,7 +593,7 @@ class Utils {
 		return $str;
 	}
 
-	public static function translit_kb_ru2az($str, $reverse=false) { // 2017-01-25
+	public static function translit_kb_ru2az($str, $reverse=false) {
 		$refs = [
 			'г' => 'q', 'Г' => 'Q',
 			'ц' => 'ü', 'Ц' => 'Ü',
@@ -607,7 +636,7 @@ class Utils {
 		return $str;
 	}
 
-	public function az_surname_isEqual($surname1, $surname2) { // 2018-09-13
+	public function az_surname_isEqual($surname1, $surname2) {
 		$surname1 = self::az_surname_trimEnding($surname1);
 		$surname2 = self::az_surname_trimEnding($surname2);
 
@@ -616,7 +645,7 @@ class Utils {
 		return ($surname1==$surname2);
 	}
 
-	public function az_surname_trimEnding($surname) { // 2018-09-13
+	public function az_surname_trimEnding($surname) {
 		$endings = ['ZADƏ', 'SOY', 'Lİ', 'LI', 'LU', 'LÜ', 'OV', 'OVA', 'YEV', 'YEVA', 'SKAYA', 'SKİY'];
 		$blacklist = ['AĞAMALI', 'AĞAQULU', 'ALAN-ƏLİ', 'ƏLİ', 'ƏLİQULU', 'MİRƏLİ', 'VƏLİ', 'GÜLƏLİ', 'KALBALI', 'SƏFƏRƏLİ', 'SEYİDƏLİ', 'ŞEKƏRƏLİ', 'ŞƏKƏRƏLİ', 'SEYFƏLİ', 'ŞİRƏLİ', 'QULİ', 'PİRƏLİ', 'PİRVƏLİ', 'PİRALI'];
 
@@ -629,7 +658,7 @@ class Utils {
 		return $surname;
 	}
 
-	public static function az_upper($str) { // 2017-02-17
+	public static function az_upper($str) {
 		$str = strtr($str, [
 			'i' => 'İ',
 			'ı' => 'I'
@@ -638,7 +667,7 @@ class Utils {
 		return $str;
 	}
 
-	public static function az_lower($str) { // 2017-11-22
+	public static function az_lower($str) {
 		$str = strtr($str, [
 			'İ' => 'i',
 			'I' => 'ı'
@@ -648,13 +677,13 @@ class Utils {
 		return $str;
 	}
 
-	public static function makeTitleURI($title) { // 2020-10-08
+	public static function makeTitleURI($title) {
 		$uri = @mb_strtolower($title);
 		$uri = strtr($uri, [' ' => '-', '&' => 'and', '%' => 'percent', '$' => 'dollar', '#' => 'n', '^' => '', '(' => '', ')' => '', '[' => '', ']' => '', '{' => '', '}' => '']);
 		return substr(self::translit($uri, 1, 1), 0, 127);
 	}
 
-	public static function extractStreetName($street) { // 2017-02-19
+	public static function extractStreetName($street) {
 		$street = strtr($street, [
 			' KÜÇ.' => '',
 			' KÜÇ' => '',
@@ -688,7 +717,7 @@ class Utils {
 		return $street_name;
 	}
 
-	public static function extractDistrictNameFromAddressText($address_full_text) { // 2018-12-26
+	public static function extractDistrictNameFromAddressText($address_full_text) {
 		$address_elements = explode(',', $address_full_text);
 		$district_name =  self::az_upper(trim(@$address_elements['1']));
 
@@ -703,24 +732,24 @@ class Utils {
 
 	/* URL & HTTP, requests handling */
 
-	public static function isAjax() { // 2017-04-06
+	public static function isAjax() {
 		return (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && (strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])=='xmlhttprequest'));
 	}
 
-	public static function parseJsonRequest() { // 2017-06-30
+	public static function parseJsonRequest() {
 		$request = file_get_contents('php://input');
 		$json = json_decode($request, 1);
 
 		return $json;
 	}
 
-	public static function cidr_match($ip, $cidr) { // 2019-02-16
+	public static function cidr_match($ip, $cidr) {
 		list($subnet, $mask) = explode('/', $cidr);
 		if ((ip2long($ip) & ~((1 << (32 - $mask)) - 1) ) == ip2long($subnet)) {return true;}
 		return false;
 	}
 
-	public static function redirect($url) { // 2020-10-08
+	public static function redirect($url) {
 		if (headers_sent()) {
 			print "<script type=\"text/javascript\">
 				location.href = '".self::safeJSEcho($url, 1)."';
@@ -733,7 +762,7 @@ class Utils {
 		die();
 	}
 
-	public static function delayedRedirect($url, $delay=2000) { // 2020-10-04
+	public static function delayedRedirect($url, $delay=2000) {
 		print "<script type=\"text/javascript\">
 			setTimeout(function() {
 				document.location.href = '".self::safeJSEcho($url, 1)."';
@@ -741,17 +770,17 @@ class Utils {
 		</script>";
 	}
 
-	public static function goLoc($getParams=[]) { // 2020-10-08
+	public static function goLoc($getParams=[]) {
 		if (empty($getParams)) {return;}
 		if (is_string($getParams)) {$getParams = explode(',', $getParams);}
 		self::goLocWith($getParams);
 	}
 
-	public static function goLocWith($getParams=[]) { // 2020-10-07
+	public static function goLocWith($getParams=[]) {
 		self::redirect(self::trueLink($getParams));
 	}
 
-	public static function trueLink($allowed_keys) { // 2016-11-24
+	public static function trueLink($allowed_keys) {
 		foreach ($_GET as $key=>$val) {
 			if (!in_array($key, $allowed_keys)) {continue;}
 
@@ -768,7 +797,7 @@ class Utils {
 		return '?'.$link;
 	}
 
-	public static function array2url($array, $variable='') { // 2020-10-08
+	public static function array2url($array, $variable='') {
 		$url = '';
 		if (count($array)) {
 			$all = [];
@@ -796,7 +825,7 @@ class Utils {
 		return $url;
 	}
 
-	public static function parseURL($url) { // 2020-10-12
+	public static function parseURL($url) {
 		$request = parse_url($url);
 		if (!empty($request['query'])) {
 			$request['query'] = strtr($request['query'], [
@@ -808,7 +837,7 @@ class Utils {
 		return $request;
 	}
 
-	public static function isEmptyArrayRecursive($arr, $zerosAreValue=1) { // 2020-10-07
+	public static function isEmptyArrayRecursive($arr, $zerosAreValue=1) {
 		if (empty($arr) && (!$zerosAreValue || ($zerosAreValue && !self::variableHasValue($arr)))) {return true;}
 		if (is_array($arr)) {
 			foreach ($arr as $key=>$val) {
@@ -821,7 +850,7 @@ class Utils {
 		return false;
 	}
 
-	public static function arrayFilterKeys($arr, $keys, $skip_empty_values=true) { // 2017-07-06
+	public static function arrayFilterKeys($arr, $keys, $skip_empty_values=true) {
 		$keys_num = count($keys);
 		if (!$keys_num || !is_array($arr) || !is_array($keys)) {return [];}
 		$res = [];
@@ -833,19 +862,23 @@ class Utils {
 		return $res;
 	}
 
+	/*
 	public static function array_filter_keys($arr, $keys, $skip_empty_values=true) { // 2017-07-06, deprecated, use arrayFilterKeys() instead
 		return self::arrayFilterKeys($arr, $keys, $skip_empty_values);
 	}
+	*/
 
-	public static function arrayExcludeKeys($arr, $keys) { // 2017-07-06
+	public static function arrayExcludeKeys($arr, $keys) {
 		return self::arrayFilterKeys($arr, array_diff(array_keys($arr), $keys));
 	}
 
+	/*
 	public static function array_exclude_keys($arr, $keys) { // 2017-07-06, deprecated, use arrayExcludeKeys() instead
 		return self::arrayExcludeKeys($arr, $keys);
 	}
+	*/
 
-	public static function array_divide($array, $parts=1) { // 2016-04-21
+	public static function array_divide($array, $parts=1) {
 		$parts = intval($parts);
 		if (($parts<=1)) {return $array;}
 		$total = count($array);
@@ -877,7 +910,7 @@ class Utils {
 		}
 	}
 
-	public static function array_attributes_to_columns($attributes_list) { // 2016-04-21
+	public static function array_attributes_to_columns($attributes_list) {
 		// Transforms numeric array with assotiative arrays in values
 		// to associative array with numeric arrays as items
 		if (!is_array($attributes_list)) {
@@ -893,7 +926,7 @@ class Utils {
 		return $columns_list;
 	}
 
-	public static function array_columns_to_attributes($columns_list) { // 2016-04-21
+	public static function array_columns_to_attributes($columns_list) {
 		// Transforms associative array with numeric arrays in values
 		// to numeric array with associative arrays as items
 		if (!is_array($columns_list)) {
@@ -909,7 +942,7 @@ class Utils {
 		return $attributes_list;
 	}
 
-	public static function arraySortByCol($arr, $col) { // 2016-04-21
+	public static function arraySortByCol($arr, $col) {
 		$by = [];
 		foreach ($arr as $key=>$value) {
 			$by[$key] = $value[$col];
@@ -918,14 +951,14 @@ class Utils {
 		return $arr;
 	}
 
-	public function array_is_assoc($arr) { // 2018-10-25
+	public function array_is_assoc($arr) {
 		return (count(array_filter(array_keys($arr), 'is_string'))>0);
 	}
 
 
 	/* filesystem */
 
-	public static function file2base64($fname) { // 2017-05-01
+	public static function file2base64($fname) {
 		if (!is_file($fname)) {return false;}
 
 		$mime = mime_content_type($fname);
@@ -934,7 +967,7 @@ class Utils {
 		return "data:$mime;base64,$content";
 	}
 
-	public static function mime2ext($mime) { // 2017-05-03
+	public static function mime2ext($mime) {
 		$rel = [
 			'application/pdf'   => 'pdf',
 			'application/zip'   => 'zip',
@@ -988,7 +1021,7 @@ class Utils {
 		return array_pop($pieces);
 	}
 
-	public static function base64_to_file($str, $dir, $fname=0) { // 2017-05-03
+	public static function base64_to_file($str, $dir, $fname=0) {
 		$photo_parts = explode(';base64,', $str);
 		$mime = substr($photo_parts[0], 5);
 		$photo = base64_decode($photo_parts[1]);
@@ -1005,12 +1038,12 @@ class Utils {
 		return false;
 	}
 
-	public static function getFileSize($file_size) { // 2017-05-03
+	public static function getFileSize($file_size) {
 		$kb = round(($file_size/1024),0);
 		return $kb;
 	}
 
-	public static function getFileSizeFormatted($fname) { // 2017-05-03
+	public static function getFileSizeFormatted($fname) {
 		if (is_file($fname)) {
 			$size = @filesize($fname);
 			return self::measureBites($size);
@@ -1021,7 +1054,7 @@ class Utils {
 		];
 	}
 
-	public static function measureBites($size) { // 2017-05-03
+	public static function measureBites($size) {
 		$size = (is_numeric($size)? floatval($size): 0);
 		$measures = ['B', 'KB', 'MB', 'GB', 'TB'];
 		for ($i=0; (($size>=1024) && isset($measures[$i])); $i++) {
@@ -1033,7 +1066,7 @@ class Utils {
 		];
 	}
 
-	public static function iniGetBytes($val) { // 2017-12-13
+	public static function iniGetBytes($val) {
 		$val = trim(ini_get($val));
 		$last = '';
 		if ($val!='') {
@@ -1052,12 +1085,12 @@ class Utils {
 		return $val;
 	}
 
-	public static function isPostOverflow() { // 2017-12-13
+	public static function isPostOverflow() {
 		$maxPostSize = self::iniGetBytes('post_max_size');
 		return ((@$_SERVER['CONTENT_LENGTH']>$maxPostSize) && ($_SERVER['REQUEST_METHOD']=='POST'));
 	}
 
-	public static function dirCount($dir='.', $restrictions='ONLY_FILES') { // 2017-12-13
+	public static function dirCount($dir='.', $restrictions='ONLY_FILES') {
 		$count = 0;
 		if (empty($dir) || !is_dir($dir)) {return $count;}
 		if (substr($dir, -1)!='/') {$dir.='/';}
@@ -1079,7 +1112,7 @@ class Utils {
 		return $count;
 	}
 
-	public static function dirWalk($dir, $callback) { // 2017-08-21
+	public static function dirWalk($dir, $callback) {
 		if (empty($dir) || !is_dir($dir)) {return false;}
 		if (substr($dir, -1)!='/') {$dir.='/';}
 		$descriptor = opendir($dir);
@@ -1090,7 +1123,7 @@ class Utils {
 		return true;
 	}
 
-	public function dirCanonicalPath($dir) { // 2017-08-21
+	public function dirCanonicalPath($dir) {
 		if (empty($dir)) {return '.';}
 
 		$path_arr = explode('/', $dir);
@@ -1137,7 +1170,7 @@ class Utils {
 		return mkdir($dir, $chmod);
 	}
 
-	public static function deleteDir($directory) { // 2017-08-21
+	public static function deleteDir($directory) {
 		if (!is_dir($directory)) {return false;}
 		if (!is_writable($directory)) {return false;}
 
@@ -1156,7 +1189,7 @@ class Utils {
 		return true;
 	}
 
-	public static function rename($old_dir,$dir,$file) { // 2017-08-21
+	public static function rename($old_dir,$dir,$file) {
 		$oldfile = $old_dir.$file;
 		$newfile = $dir.$file;
 		if (!@opendir($dir)) {mkdir($dir, 0777, true);}
@@ -1167,7 +1200,7 @@ class Utils {
 		return false;
     }
 
-	public static function renameFolder($in_source, $source_dir, $in_dest, $dest_dir, $chmod='0755') { // 2017-08-21
+	public static function renameFolder($in_source, $source_dir, $in_dest, $dest_dir, $chmod='0755') {
 		if (is_dir($in_source.'/'.$source_dir) || is_dir($in_dest.'/'.$dest_dir)) {
 			if (!file_exists($in_dest.$dest_dir)) {
 				$mk = self::makeFolder($in_dest, $dest_dir, $chmod);
@@ -1182,7 +1215,7 @@ class Utils {
 		}
 	}
 
-	public static function copyDir($source, $dest) { // 2017-08-21
+	public static function copyDir($source, $dest) {
 		if (is_dir($source) || is_dir($dest)) {
 			if ($dh = opendir($source)) {
     			while (($file = readdir($dh)) !== false) {
@@ -1201,7 +1234,7 @@ class Utils {
 		}
 	}
 
-	public static function copyFile($source, $dest='') { // 2016-09-12
+	public static function copyFile($source, $dest='') {
 		if (empty($dest)) {
 			$dest = $source;
 		}
@@ -1238,7 +1271,7 @@ class Utils {
 		return false;
 	}
 
-	public static function upload($file, $source, $to, $valid_extensions=[]) { // 2017-07-06
+	public static function upload($file, $source, $to, $valid_extensions=[]) {
 		$to = self::dirCanonicalPath($to);
 		if (!is_dir($to)) {mkdir($to, 0777, true);}
 
@@ -1261,7 +1294,7 @@ class Utils {
 		return false;
 	}
 
-	public static function tmpfile_put_contents($content) { // 2017-10-26
+	public static function tmpfile_put_contents($content) {
 		$tmp_file = tempnam(sys_get_temp_dir());
 		if ($tmp_file) {
 			file_put_contents($tmp_file, $content);
@@ -1270,48 +1303,10 @@ class Utils {
 		return $tmp_file;
 	}
 
-/*
-	public static function sendEmail($to, $msg) {
-		if (is_array($to)) {
-			if (!isset($to['email'])) {return false;}
-			$username = @$to['username'];
-			$to = $to['email'];
-		}
-
-		$headers = "From: no-reply@mektebeqebul.edu.az\r\n";
-		//$headers.="Bcc: profitaz1@gmail.com\r\n";
-		$headers.="Content-type: text/html; charset=UTF-8\r\n";
-		$headers.="Content-transfer-encoding: base64\r\n\r\n";
-		if (!empty($username)) {
-			$to = '=?utf-8?B?'.base64_encode($username).'?= <'.$to.'>';
-		}
-		$subj = '=?utf-8?B?'.base64_encode($msg['subject']).'?=';
-		$text = chunk_split(base64_encode($msg['message']));
-
-		return @mail($to, $subj, $text, $headers, '-fno-reply@mektebeqebul.edu.az');
-	}
-*/
-
-/*
-	public static function getFileExt($fname, &$fname_stripped=false) {
-		if (empty($fname)) {return '';}
-		$fname_start_pos = strrpos($fname, '/');
-		if ($fname_start_pos!==false) {
-			$fname = substr($fname, ($fname_start_pos+1));
-			if (empty($fname)) {return '';}
-		}
-		$fname_splitted = explode('.', $fname);
-		$fname_parts_count = count($fname_splitted);
-		if ($fname_parts_count<2) {return '';}
-		$fname_stripped = implode('.', array_slice($fname_splitted, 0, ($fname_parts_count-1)));
-		return end($fname_splitted);
-	}
-*/
-
 
 	/* Miscellaneous functions */
 
-	public static function generateUniqueId() { // 2017-07-06
+	public static function generateUniqueId() {
 		return md5(uniqid(rand(), true).'i*M4+1$');
 	}
 }
