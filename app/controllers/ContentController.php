@@ -58,6 +58,28 @@ class ContentController extends BaseController {
 				$this->view->params['alternative_langs'][$ln] = Url::toRoute(['content/post', 'category_sef' => $params['category']['sef'], 'id' => $params['post']['id'], 'lang' => $ln], true);
 			}
 		}
+
+		// Open Graph meta tags
+		$absoluteUrl = Url::toRoute([
+			'content/post',
+			'category_sef' => $params['category']['sef'],
+			'id' => $params['post']['id'],
+			'lang' => $this->lang
+		], true);
+
+		$description = \app\helpers\Out::md2text($params['post']['post'], 180);
+
+		$image = !empty($params['post']['img'])
+			? Url::to('@web/uploads/articles/larges/'.$params['post']['img'], true)
+			: Url::to('@web/images/og-default.jpg', true);
+
+		$this->view->params['og'] = [
+			'title' => $params['post']['title'],
+			'description' => $description,
+			'image' => $image,
+			'url' => $absoluteUrl,
+		];
+
 		return $this->render('@app/views/content/post', $params);
 	}
 }

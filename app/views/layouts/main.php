@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\BaseUrl;
 use yii\helpers\Url;
 use app\helpers\Utils;
+use app\helpers\Env;
 use app\widgets\Menu;
 use app\widgets\LangPicker;
 
@@ -22,7 +23,7 @@ $this->beginPage();
 
         <title><?= Html::encode($this->title); ?></title>
 
-		<link rel="icon" href="favicon.ico" />
+		<link rel="icon" href="<?= Url::to('@web/favicon.ico'); ?>" />
 		<!-- <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 		<link rel="manifest" href="site.webmanifest" /> -->
 
@@ -37,6 +38,22 @@ $this->beginPage();
         }
         ?>
 
+        <?php if (!empty($this->params['og'])) {
+            $og = $this->params['og'];
+        ?>
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="<?= Html::encode($og['title']); ?>">
+        <meta property="og:description" content="<?= Html::encode($og['description']); ?>">
+        <meta property="og:image" content="<?= Html::encode($og['image']); ?>">
+        <meta property="og:url" content="<?= Html::encode($og['url']); ?>">
+        <meta property="og:site_name" content="<?= Html::encode(Env::get('sitename')); ?>">
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="<?= Html::encode($og['title']); ?>">
+        <meta name="twitter:description" content="<?= Html::encode($og['description']); ?>">
+        <meta name="twitter:image" content="<?= Html::encode($og['image']); ?>">
+        <?php } ?>
+
         <link rel="stylesheet" href="<?= \yii\helpers\Url::to('@web/css/bootstrap-5.3.3/css/bootstrap.css') ?>">
 		<link rel="stylesheet" href="<?= \yii\helpers\Url::to('@web/css/sb-admin-7.0.7.css') ?>">
         <link rel="stylesheet" href="<?= \yii\helpers\Url::to('@web/css/skin-irry.css') ?>">
@@ -45,6 +62,7 @@ $this->beginPage();
 		<script src="<?= \yii\helpers\Url::to('@web/js/fa6.js') ?>"></script>
 		<script src="<?= \yii\helpers\Url::to('@web/js/color-theme-toggler.js') ?>"></script>
 
+<?php if (Env::get('mode')=='prod') { ?>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YW6LFL6DG8"></script>
 <script>
@@ -54,6 +72,7 @@ $this->beginPage();
 
   gtag('config', 'G-YW6LFL6DG8');
 </script>
+<?php } ?>
 
 		<?php $this->head(); ?>
     </head>
