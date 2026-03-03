@@ -63,6 +63,31 @@ class Content extends Model {
 		return $category;
 	}
 
+	public static function getPostById($id, $category_id = null) {
+		$ln = explode('-', Yii::$app->language)[0];
+		$sql = "SELECT a.id, a.sef, a.img, a.publish_datetime, a.is_highlighted,
+				tr1.text AS `title`, tr2.text AS `post`
+			FROM articles a
+				JOIN translates tr1 ON tr1.ref_table='articles' AND tr1.ref_id=a.id AND tr1.lang=:lang AND tr1.fieldname='title'
+				JOIN translates tr2 ON tr2.ref_table='articles' AND tr2.ref_id=a.id AND tr2.lang=:lang AND tr2.fieldname='post'
+				JOIN translates tr3 ON tr3.ref_table='articles' AND tr3.ref_id=a.id AND tr3.lang=:lang AND tr3.fieldname='is_published_lang' AND tr3.text='1'
+				".(!empty($category_id)? "JOIN articles_cats_rel acr ON acr.article_id=a.id AND acr.category_id=:category_id": "")."
+			WHERE a.is_deleted='0' AND a.is_published='1' AND a.publish_datetime<=:time AND a.id=:id
+			LIMIT 1";
+		$params = [
+			':time' => date('Y-m-d H:i:s'),
+			':lang' => $ln,
+			':id' => $id,
+		];
+		if (!empty($category_id)) {
+			$params[':category_id'] = $category_id;
+		}
+
+		$post = Yii::$app->db->createCommand($sql, $params)->queryOne();
+
+		return $post;
+	}
+
 	public static function getCategoryLatest($category_id, $limit) {
 		$ln = explode('-', Yii::$app->language)[0];
 		$sql = "SELECT a.id, a.sef, a.img, a.publish_datetime, a.is_highlighted,

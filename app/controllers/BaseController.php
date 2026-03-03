@@ -9,6 +9,8 @@ use app\helpers\Utils;
 
 class BaseController extends Controller {
 
+	public $lang = 'en';
+
 	public function beforeAction($action='') {
 		if (!parent::beforeAction($action)) {
 			return false;
@@ -20,6 +22,7 @@ class BaseController extends Controller {
 		} else {
 			\Yii::$app->language = 'en-US';
 		}
+		$this->lang = explode('-', Yii::$app->language)[0];
 
 		return true;
 	}

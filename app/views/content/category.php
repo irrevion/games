@@ -15,20 +15,28 @@ use app\helpers\Out;
 							<?= Yii::t('app', 'category_page_no_content'); ?>
 						</div>
 						<?php } else { ?>
+						<!-- content blocks -->
+						<div class="row row-cols-1 row-cols-lg-2 g-4">
 						<?php foreach ($posts as $p) { ?>
-						<div class="card mb-4">
-							<div class="card-body">
-								<div class="align-items-center mb-2">
-									<?php if (!empty($p['img'])) { ?>
-									<img src="<?= Url::to('@web/uploads/articles/block/'.$p['img']); ?>" alt="<?= Html::encode($p['title']); ?>" class="float-end img-thumbnail mini" />
-									<?php } ?>
-									<!-- <h5 class="card-title mb-0"><?= Html::encode($p['title']); ?></h5> -->
-									<?= Out::md2html($p['post']); ?>
+							<?php
+								$txt = Out::short($p['post'], 180);
+							?>
+							<div class="col">
+								<div class="card h-100 mb-4">
+									<div class="card-header">
+										<?= Out::catIco($p['category_sef']); ?> <?= Html::encode($p['title']); ?>
+									</div>
+									<div class="card-body">
+										<?php if (!empty($p['img'])) { ?>
+										<img src="<?= Url::to('@web/uploads/articles/block/'.$p['img']); ?>" alt="<?= Html::encode($p['title']); ?>" class="float-end img-thumbnail mini" />
+										<?php } ?>
+										<?= $txt ?> <?= str_ends_with($txt, '...') ? Html::a(Yii::t('app', 'read_more'), ['content/post', 'category_sef' => $p['category_sef'], 'id' => $p['id'], 'slug' => $p['sef'], 'lang' => explode('-', Yii::$app->language)[0]]) : ''; ?>
+									</div>
+									<div class="card-footer small text-muted"><?= Out::pubTS($p['publish_datetime']); ?></div>
 								</div>
-								<!-- <a href="<?= Url::to('category/'.$p['category_sef'].'/post/'.$p['id'].'-'.$p['sef']); ?>" class="btn btn-primary"><?= Yii::t('app', 'read_more'); ?></a> -->
 							</div>
-						</div>
 						<?php } ?>
+						</div>
 						<?php } ?>
 					</div>
 
