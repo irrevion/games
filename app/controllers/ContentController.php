@@ -44,6 +44,9 @@ class ContentController extends BaseController {
 		$this->layout = '@app/views/layouts/main';
 		$params = [];
 		$params['category'] = Content::getCategoryBySef($category_sef);
+		if (empty($params['category']['id'])) {
+			throw new \yii\web\HttpException(404);
+		}
 		$params['post'] = Content::getPostById($id, $params['category']['id']);
 		if (empty($params['post']['id'])) {
 			throw new \yii\web\HttpException(404);

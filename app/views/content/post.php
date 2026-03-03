@@ -12,8 +12,8 @@ use app\widgets\Breadcrumbs;
                         <h1 class="mt-4"><?= Html::encode($post['title']); ?></h1>
 						<?= Breadcrumbs::widget([
 							'links' => [
-								['title' => Yii::t('app', 'main_page_title'), 'href' => ['site/main'], 'icon' => 'home'],
-								['title' => Html::encode($category['name']), 'href' => ['content/category', 'category_sef' => $category['sef'], 'lang' => explode('-', Yii::$app->language)[0]], 'icon' => (Out::$icons[$category['sef']] ?? 'folder')],
+								['title' => Yii::t('app', 'main_page_title'), 'href' => ['site/home', 'lang' => $this->context->lang], 'icon' => 'home'],
+								['title' => Html::encode($category['name']), 'href' => ['content/category', 'category_sef' => $category['sef'], 'lang' => $this->context->lang], 'icon' => (Out::$icons[$category['sef']] ?? 'folder')],
 								['title' => Html::encode($post['title']), 'href' => '', 'icon' => 'file'],
 							],
 						]); ?>
