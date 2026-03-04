@@ -352,7 +352,10 @@ class Utils {
 		$str = strtr($str, [
 			'</p>' => "</p>\n",
 			'</li>' => "</li>\n",
+			'</h2>' => "</h2>\n",
 			'</h3>' => "</h3>\n",
+			'</h4>' => "</h4>\n",
+			'</blockquote>' => "</blockquote>\n",
 			'<br>' => "<br>\n",
 			'<br/>' => "<br/>\n",
 			'<br />' => "<br />\n",
