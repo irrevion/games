@@ -23,8 +23,8 @@ use app\helpers\Out;
 							?>
 							<div class="col">
 								<div class="card h-100 mb-4">
-									<div class="card-header">
-										<?= Out::catIco($p['category_sef']); ?> <?= Html::encode($p['title']); ?>
+									<div class="card-header" title="<?= Html::encode($p['title']); ?>">
+										<?= Out::catIco($p['category_sef']); ?> <?= Html::encode(Utils::limitStringLength($p['title'], 42)); ?>
 									</div>
 									<div class="card-body">
 										<?php if (!empty($p['img'])) { ?>

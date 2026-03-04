@@ -27,6 +27,7 @@ use app\widgets\Breadcrumbs;
 									<?= Out::md2html($post['post']); ?>
 								</div>
 							</div>
+							<div class="card-footer small text-muted"><?= Out::pubTS($post['publish_datetime']); ?></div>
 						</div>
 					</div>
 
