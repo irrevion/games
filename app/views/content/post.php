@@ -13,8 +13,8 @@ use app\widgets\Breadcrumbs;
 						<?= Breadcrumbs::widget([
 							'links' => [
 								['title' => Yii::t('app', 'main_page_title'), 'href' => ['site/home', 'lang' => $this->context->lang], 'icon' => 'home'],
-								['title' => Html::encode($category['name']), 'href' => ['content/category', 'category_sef' => $category['sef'], 'lang' => $this->context->lang], 'icon' => (Out::$icons[$category['sef']] ?? 'folder')],
-								['title' => Html::encode($post['title']), 'href' => '', 'icon' => 'file'],
+								['title' => $category['name'], 'href' => ['content/category', 'category_sef' => $category['sef'], 'lang' => $this->context->lang], 'icon' => (Out::$icons[$category['sef']] ?? 'folder')],
+								['title' => $post['title'], 'href' => '', 'icon' => 'file'],
 							],
 						]); ?>
 
