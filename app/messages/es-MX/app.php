@@ -40,6 +40,7 @@ return [
 	'contacts_feedback' => 'Enviar mensaje',
 
 	'category_page_no_content' => 'No hay contenido en esta categoría aún. Por favor, vuelve más tarde.',
+	'page_num_title' => 'Página {num}',
 ];
 
 ?>

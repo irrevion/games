@@ -30,13 +30,43 @@ class ContentController extends BaseController {
 			throw new \yii\web\HttpException(404);
 		}
 		$this->view->title = $params['category']['name'].' - '.Env::get('sitename');
-		$this->view->params['canonical'] = Url::toRoute(['content/category', 'category_sef' => $params['category']['sef'], 'lang' => $this->lang], true);
+		$routeParams = ['content/category', 'category_sef' => $params['category']['sef'], 'lang' => $this->lang];
+		$currentPage = (int)Yii::$app->request->get('page', '1');
+		if ($currentPage<1) {
+			throw new \yii\web\HttpException(404);
+		}
+		if ($currentPage>1) {
+			$this->view->title = Yii::t('app', 'page_num_title', ['num' => $currentPage]).' - '.$this->view->title;
+			$routeParams['page'] = $currentPage;
+		}
+		$this->view->params['canonical'] = Url::toRoute($routeParams, true);
 		foreach (Yii::$app->params['langs'] as $ln=>$locale) {
 			if ($locale != Yii::$app->language) {
-				$this->view->params['alternative_langs'][$ln] = Url::toRoute(['content/category', 'category_sef' => $params['category']['sef'], 'lang' => $ln], true);
+				$altRouteParams = $routeParams;
+				$altRouteParams['lang'] = $ln;
+				$this->view->params['alternative_langs'][$ln] = Url::toRoute($altRouteParams, true);
 			}
 		}
-		$params['posts'] = Content::getCategoryLatest($params['category']['id'], 20);
+
+		$params['posts'] = [];
+		Content::$items_amount = Content::getCategoryPostsNum($params['category']['id']);
+		$pg = new \yii\data\Pagination([
+			'totalCount' => Content::$items_amount,
+			'pageSize' => Content::$pp,
+			// 'route' => 'content/category',
+			'pageSizeParam' => false,
+			'forcePageParam' => false,
+		]);
+		if (($currentPage>1) && ($currentPage>$pg->pageCount)) {
+			throw new \yii\web\HttpException(404);
+		}
+		if (Content::$items_amount > 0) {
+			Content::$pages_amount = $pg->pageCount;
+			Content::$curr_pg = $pg->page + 1;
+			$params['posts'] = Content::getCategoryPostsList($params['category']['id'], $pg);
+		}
+		$params['pg'] = $pg;
+
 		return $this->render('@app/views/content/category', $params);
 	}
 

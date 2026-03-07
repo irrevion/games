@@ -108,6 +108,13 @@
 	color: inherit;
 }
 
+.nav-pagination-container {
+	display: flex; justify-content: center; margin: 20px 0;
+}
+.nav-pagination-container .pagination .page-link {
+	padding: 14px 20px;
+}
+
 [data-bs-theme=light] .skin-irry {
 	.logo-light {
 		display: inline;
@@ -194,6 +201,9 @@
 	}
 	a:hover {
 		color: #f7a21e;
+	}
+	.pagination .active .page-link {
+		color: #fff;
 	}
 	footer {
 		background-color: #14181d; color: #f7a21e; border-top: 1px solid #000;

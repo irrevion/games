@@ -24,19 +24,42 @@ use app\helpers\Out;
 							<div class="col">
 								<div class="card h-100 mb-4">
 									<div class="card-header" title="<?= Html::encode($p['title']); ?>">
-										<?= Out::catIco($p['category_sef']); ?> <?= Html::encode(Utils::limitStringLength($p['title'], 42)); ?>
+										<?= Out::catIco($category['sef']); ?> <?= Html::encode(Utils::limitStringLength($p['title'], 42)); ?>
 									</div>
 									<div class="card-body">
 										<?php if (!empty($p['img'])) { ?>
 										<img src="<?= Url::to('@web/uploads/articles/block/'.$p['img']); ?>" alt="<?= Html::encode($p['title']); ?>" class="float-end img-thumbnail mini" />
 										<?php } ?>
-										<?= $txt ?> <?= str_ends_with($txt, '...') ? Html::a(Yii::t('app', 'read_more'), ['content/post', 'category_sef' => $p['category_sef'], 'id' => $p['id'], 'slug' => $p['sef'], 'lang' => explode('-', Yii::$app->language)[0]]) : ''; ?>
+										<?= $txt ?> <?= str_ends_with($txt, '...') ? Html::a(Yii::t('app', 'read_more'), ['content/post', 'category_sef' => $category['sef'], 'id' => $p['id'], 'slug' => $p['sef'], 'lang' => explode('-', Yii::$app->language)[0]]) : ''; ?>
 									</div>
 									<div class="card-footer small text-muted"><?= Out::pubTS($p['publish_datetime']); ?></div>
 								</div>
 							</div>
 						<?php } ?>
 						</div>
+						<!-- end content blocks -->
+
+						<!-- pagination -->
+						<nav class="nav-pagination-container" aria-label="Category pagination">
+						<?php
+							print \yii\widgets\LinkPager::widget([
+								'pagination' => $pg,
+								'pageCssClass' => 'page-item',
+								'linkOptions' => ['class' => 'page-link'],
+								// 'disableCurrentPageButton' => true,
+								// 'disabledPageCssClass' => 'disabled',
+								'activePageCssClass' => 'active',
+								'prevPageCssClass' => 'page-item prev',
+								'nextPageCssClass' => 'page-item next',
+								'disabledListItemSubTagOptions' => [
+									'tag' => 'a',
+									'href' => '#',
+									'class' => 'page-link disabled'
+								],
+							]);
+						?>
+						</nav>
+						<!-- end pagination -->
 						<?php } ?>
 					</div>
 

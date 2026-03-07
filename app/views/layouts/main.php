@@ -19,7 +19,6 @@ $this->beginPage();
 		<?php $this->registerCsrfMetaTags(); ?>
 
         <meta name="description" content="PC gaming blog with story-driven playthroughs, sharp commentary, honest reviews, and practical guides." />
-        <meta name="author" content="Valentin Belousov" />
 
         <title><?= Html::encode($this->title); ?></title>
 
