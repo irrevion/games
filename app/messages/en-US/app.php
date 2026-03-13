@@ -3,9 +3,11 @@
 return [
 	'translate' => 'Translate',
 	'lang_en_US' => 'English',
-	'lang_es_MX' => 'Spanish',
-	'lang_en_US_title' => 'English | en-US',
-	'lang_es_MX_title' => 'Spanish | es-MX',
+	'lang_es_MX' => 'Español',
+	'lang_uk_UA' => 'Українська',
+	'lang_en_US_title' => 'English | US',
+	'lang_es_MX_title' => 'Spanish | Mexico',
+	'lang_uk_UA_title' => 'Ukrainian',
 
 	'theme_light' => 'Light',
 	'theme_dark' => 'Dark',

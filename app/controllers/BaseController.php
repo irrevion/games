@@ -17,8 +17,9 @@ class BaseController extends Controller {
 		}
 
 		$lang = \Yii::$app->request->get('lang');
-		if ($lang === 'es') {
-			\Yii::$app->language = 'es-MX';
+		$allowed = Yii::$app->params['langs'];
+		if (isset($allowed[$lang])) {
+			\Yii::$app->language = $allowed[$lang];
 		} else {
 			\Yii::$app->language = 'en-US';
 		}

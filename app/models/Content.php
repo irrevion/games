@@ -10,7 +10,7 @@ use app\helpers\Utils;
 class Content extends Model {
 
 	public static $curr_pg = 1;
-	public static $pp = 2;
+	public static $pp = 20;
 	public static $pages_amount = 0;
 	public static $items_amount = 0;
 	public static $log = [];

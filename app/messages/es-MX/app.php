@@ -2,10 +2,12 @@
 
 return [
 	'translate' => 'Traducir',
-	'lang_en_US' => 'Inglés',
+	'lang_en_US' => 'English',
 	'lang_es_MX' => 'Español',
-	'lang_en_US_title' => 'Inglés | en-US',
-	'lang_es_MX_title' => 'Español | es-MX',
+	'lang_uk_UA' => 'Українська',
+	'lang_en_US_title' => 'Inglés | Estados Unidos',
+	'lang_es_MX_title' => 'Español | México',
+	'lang_uk_UA_title' => 'Ucraniano',
 
 	'theme_light' => 'Claro',
 	'theme_dark' => 'Oscuro',
