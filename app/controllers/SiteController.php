@@ -7,6 +7,7 @@ use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Response;
 use app\helpers\Env;
+use app\helpers\Out;
 use app\helpers\Utils;
 use app\controllers\BaseController;
 use app\models\Content;
@@ -58,6 +59,33 @@ class SiteController extends BaseController {
 			'message' => (empty($exception)? 'Not found': $exception->getMessage()),
 		]);
     }
+
+	public function actionMap() {
+		$this->layout = false;
+		\Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+		header('Content-Type: text/xml; charset=utf-8');
+		flush();
+
+		$xml = new \XMLWriter();
+		$xml->openURI('php://output');
+		$xml->startDocument('1.0', 'UTF-8');
+		$xml->setIndent(true);
+
+		$xml->startElement('urlset');
+		$xml->writeAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+		$langs = Yii::$app->params['langs'];
+		foreach ($langs as $ln=>$locale) {
+			$urls = Content::getUrls($ln);
+			Out::sitemapXmlUrls($xml, $urls);
+			flush();
+		}
+		$xml->endElement(); // end urlset
+
+		$xml->endDocument();
+    	$xml->flush();
+		flush();
+		die;
+	}
 
 	/*public function actionRedirect($url) {
 		if (substr($url, -1)=='/') {

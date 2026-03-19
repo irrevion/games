@@ -79,4 +79,21 @@ class Out {
 			$html
 		);
 	}
+
+	public static function sitemapXmlUrls($xml, $urls) {
+		foreach ($urls as $u) {
+			$xml->startElement('url');
+			$xml->writeElement('loc', $u['loc']);
+			if (!empty($u['lastmod'])) {
+				$xml->writeElement('lastmod', date('Y-m-d', strtotime($u['lastmod'])));
+			}
+			if (!empty($u['changefreq'])) {
+				$xml->writeElement('changefreq', $u['changefreq']);
+			}
+			if (!empty($u['priority'])) {
+				$xml->writeElement('priority', $u['priority']);
+			}
+			$xml->endElement(); // end url
+		}
+	}
 }

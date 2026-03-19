@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://games.irrevion.dp.ua/sitemap.xml
